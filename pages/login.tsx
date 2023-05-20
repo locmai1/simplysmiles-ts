@@ -17,11 +17,11 @@ const Login = () => {
       </div>
 
       <div className="h-screen w-1/2 flex flex-col justify-center items-center">
-        <div className="w-[300px] h-28 relative">
+        <div className="w-80 h-28 relative">
           <Image src={"/login/Logo.png"} alt="logo" sizes="100vh" fill={true} />
         </div>
         <button
-          className="w-[400px] h-[50px] mt-4 rounded-lg text-secondary-default bg-primary-default font-bold"
+          className="w-96 h-12 mt-8 rounded-lg text-secondary-default bg-primary-default font-bold active:scale-95 active:shadow-lg transition-all"
           onClick={() => signIn("google", { callbackUrl: "/" })}
         >
           Login with Google
