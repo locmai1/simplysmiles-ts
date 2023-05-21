@@ -24,7 +24,7 @@ const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
       <div className="w-96 bg-light-green">
         <div className="w-full h-full pt-16 flex flex-col gap-2.5">
           <button
-            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-36 justify-start items-center"
+            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center"
             onClick={() => setCurrPage(<div>Dashboard</div>)}
           >
             <Image
@@ -39,26 +39,26 @@ const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
 
           {/* componentize in useEffect */}
           <button
-            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-36 justify-start items-center pl-8"
+            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center pl-8"
             onClick={() => setCurrPage(<div>Home #1</div>)}
           >
             <span className="ml-2">Home #1</span>
           </button>
           <button
-            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-36 justify-start items-center pl-8"
+            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center pl-8"
             onClick={() => setCurrPage(<div>Home #2</div>)}
           >
             <span className="ml-2">Home #2</span>
           </button>
           <button
-            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-36 justify-start items-center pl-8"
+            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center pl-8"
             onClick={() => setCurrPage(<div>Home #3</div>)}
           >
             <span className="ml-2">Home #3</span>
           </button>
 
           <button
-            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-36 justify-start items-center"
+            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center"
             onClick={() => setCurrPage(<div>Manage</div>)}
           >
             <Image

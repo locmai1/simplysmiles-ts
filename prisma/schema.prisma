@@ -42,4 +42,45 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  isAdmin       Boolean   @default(false)
+  fosterIds     String[]  @db.ObjectId
+  foster        Foster[]  @relation(fields: [fosterIds], references: [id])
+}
+
+model Budget {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  celebration     Int    
+  clothes         Int    
+  culturalDev     Int    
+  management      Int    
+  education       Int    
+  household       Int    
+  overnightTravel Int    
+  recreational    Int    
+  vehicle         Int
+}
+
+model Expense {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  vendor   String
+  date     DateTime @default(now())
+  amount   Int       
+  account  String
+  payment  String
+  memo     String
+  userId   String   @db.ObjectId
+  user     User     @relation(fields: [userId], references: [id])
+  fosterId String   @db.ObjectId
+  foster   Foster   @relation(fields: [fosterId], references: [id])
+}
+
+model Foster {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  userIds    String[]  @db.ObjectId
+  user       User[]    @relation(fields: [userIds], references: [id])
+  budgetId   String    @db.ObjectId
+  budget     Budget    @relation(fields: [budgetId], references: [id])
+  expenseIds String[]  @db.ObjectId
+  expenses   Expense[] @relation(fields: [expenseIds], references: [id])
+  number     Int       @default(autoincrement())
 }
