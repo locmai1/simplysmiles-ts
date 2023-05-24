@@ -7,11 +7,23 @@ type SidebarProps = {
 };
 
 const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
-  const [homes, setHomes] = useState<any>([]);
+  const [homes, setHomes] = useState<any>();
   const [homesButtons, setHomesButtons] = useState<React.ReactNode[]>([]);
 
   useEffect(() => {
     // api call to fetch all homes, setHomes
+    const fetchFostersData = async () => {
+      try {
+        const response = await fetch("/api/fosters");
+        const fosters = await response.json();
+        setHomes(fosters);
+
+        console.log(fosters);
+      } catch (error) {
+        console.log("failed to get foster homes");
+      }
+    };
+    fetchFostersData();
   }, []);
 
   useEffect(() => {

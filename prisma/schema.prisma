@@ -45,6 +45,7 @@ model User {
   isAdmin       Boolean   @default(false)
   fosterIds     String[]  @db.ObjectId
   foster        Foster[]  @relation(fields: [fosterIds], references: [id])
+  expenses      Expense[]
 }
 
 model Budget {
@@ -58,6 +59,7 @@ model Budget {
   overnightTravel Int    
   recreational    Int    
   vehicle         Int
+  fosters         Foster[]
 }
 
 model Expense {
@@ -80,7 +82,6 @@ model Foster {
   user       User[]    @relation(fields: [userIds], references: [id])
   budgetId   String    @db.ObjectId
   budget     Budget    @relation(fields: [budgetId], references: [id])
-  expenseIds String[]  @db.ObjectId
-  expenses   Expense[] @relation(fields: [expenseIds], references: [id])
-  number     Int       @default(autoincrement())
+  expenses   Expense[]
+  name       String    @unique
 }
