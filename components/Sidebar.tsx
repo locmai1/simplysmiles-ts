@@ -49,7 +49,7 @@ const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
             <span className="ml-2">Dashboard</span>
           </button>
 
-          {/* componentize in useEffect */}
+          {/* TODO: Home Component passing in the Home Id  */}
           <button
             className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center pl-8"
             onClick={() => setCurrPage(<div>Home #1</div>)}

@@ -59,7 +59,7 @@ model Budget {
   overnightTravel Int    
   recreational    Int    
   vehicle         Int
-  fosters         Foster[]
+  foster          Foster?
 }
 
 model Expense {
@@ -73,14 +73,14 @@ model Expense {
   userId   String   @db.ObjectId
   user     User     @relation(fields: [userId], references: [id])
   fosterId String   @db.ObjectId
-  foster   Foster   @relation(fields: [fosterId], references: [id])
+  foster   Foster   @relation(fields: [fosterId], references: [id], onDelete: Cascade)
 }
 
 model Foster {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   userIds    String[]  @db.ObjectId
   user       User[]    @relation(fields: [userIds], references: [id])
-  budgetId   String    @db.ObjectId
+  budgetId   String    @unique @db.ObjectId
   budget     Budget    @relation(fields: [budgetId], references: [id])
   expenses   Expense[]
   name       String    @unique
