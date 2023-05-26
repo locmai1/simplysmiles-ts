@@ -1,5 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Image from "next/image";
+import ManagePage from "./ManagePage";
 
 type SidebarProps = {
   currPage: React.ReactNode;
@@ -12,18 +13,17 @@ const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
 
   useEffect(() => {
     // api call to fetch all homes, setHomes
-    const fetchFostersData = async () => {
-      try {
-        const response = await fetch("/api/fosters");
-        const fosters = await response.json();
-        setHomes(fosters);
-
-        console.log(fosters);
-      } catch (error) {
-        console.log("failed to get foster homes");
-      }
-    };
-    fetchFostersData();
+    // const fetchFostersData = async () => {
+    //   try {
+    //     const response = await fetch("/api/fosters");
+    //     const fosters = await response.json();
+    //     setHomes(fosters);
+    //     console.log(fosters);
+    //   } catch (error) {
+    //     console.log("failed to get foster homes");
+    //   }
+    // };
+    // fetchFostersData();
   }, []);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
             onClick={() => setCurrPage(<div>Dashboard</div>)}
           >
             <Image
-              src={"/icons/home.svg"}
+              src={"/sidebar/home.svg"}
               width={32}
               height={32}
               alt="home icon"
@@ -56,7 +56,7 @@ const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
           >
             <span className="ml-2">Home #1</span>
           </button>
-          <button
+          {/* <button
             className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center pl-8"
             onClick={() => setCurrPage(<div>Home #2</div>)}
           >
@@ -67,14 +67,14 @@ const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
             onClick={() => setCurrPage(<div>Home #3</div>)}
           >
             <span className="ml-2">Home #3</span>
-          </button>
+          </button> */}
 
           <button
             className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center"
-            onClick={() => setCurrPage(<div>Manage</div>)}
+            onClick={() => setCurrPage(<ManagePage />)}
           >
             <Image
-              src={"/icons/manage.svg"}
+              src={"/sidebar/manage.svg"}
               width={32}
               height={32}
               alt="manage icon"
