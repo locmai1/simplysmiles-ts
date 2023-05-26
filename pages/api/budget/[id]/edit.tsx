@@ -65,6 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             res.status(404).json({
               error: `failed to update budget with id: ${budgetId}`,
             });
+            return;
           }
 
           return res.status(200).json(updatedBudget);

@@ -29,21 +29,77 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         })) ?? { admin: false };
 
         // create foster home if admin
+        // TODO: req.body accepts budget params -> prisma create budget -> get budgetId to create foster
         if (admin) {
+          // const bodySchema = z.object({
+          //   userIds: z.array(z.string()),
+          //   budgetId: z.string(),
+          //   name: z.string(),
+          // });
+          // const body = bodySchema.parse(JSON.parse(req.body));
+          // const fosterEntry = await prisma.foster.create({
+          //   data: {
+          //     userIds: body.userIds,
+          //     budgetId: body.budgetId,
+          //     name: body.name,
+          //   },
+          // });
+          // res.status(200).json(fosterEntry);
+
           const bodySchema = z.object({
-            userIds: z.array(z.string()),
-            budgetId: z.string(),
             name: z.string(),
+            celebration: z.number(),
+            clothes: z.number(),
+            culturalDev: z.number(),
+            management: z.number(),
+            education: z.number(),
+            household: z.number(),
+            overnightTravel: z.number(),
+            recreational: z.number(),
+            vehicle: z.number(),
           });
           const body = bodySchema.parse(JSON.parse(req.body));
-          const fosterEntry = await prisma.foster.create({
+
+          const budget = await prisma.create({
             data: {
-              userIds: body.userIds,
-              budgetId: body.budgetId,
+              celebration: body.celebration,
+              clothes: body.clothes,
+              culturalDev: body.culturalDev,
+              management: body.management,
+              education: body.education,
+              household: body.household,
+              overnightTravel: body.overnightTravel,
+              recreational: body.recreational,
+              vehicle: body.vehicle,
+            },
+            include: {
+              id: true,
+            },
+          });
+
+          if (!budget) {
+            res.status(404).json({
+              error: `failed to create new budget`,
+            });
+            return;
+          }
+
+          const foster = await prisma.foster.create({
+            data: {
+              userIds: [userId],
+              budgetId: budget.id,
               name: body.name,
             },
           });
-          res.status(200).json(fosterEntry);
+
+          if (!foster) {
+            res.status(404).json({
+              error: `failed to create new foster`,
+            });
+            return;
+          }
+
+          res.status(200).json(foster);
         } else {
           res.status(500).json({
             error: "in order to access this route, please sign in as admin",

@@ -26,6 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           res.status(404).json({
             error: `cannot find foster with id ${fosterId}`,
           });
+          return;
         }
 
         res.status(200).json(foster);

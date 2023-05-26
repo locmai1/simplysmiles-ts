@@ -27,6 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           res.status(404).json({
             error: `user ${userId} has no associated foster homes`,
           });
+          return;
         }
 
         res.status(200).json(homes);
