@@ -21,6 +21,8 @@ module.exports = {
         "light-red": "#EB5757",
         "dark-red": "#A02525",
         "dark-gray": "#333333",
+        "light-gray": "#C5C5C5",
+        "light-red": "#EB5757",
       },
     },
   },

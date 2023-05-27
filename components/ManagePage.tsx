@@ -8,13 +8,19 @@ const ManagePage = () => {
 
   return (
     <div className="p-16 w-full h-full flex flex-col relative">
-      {showAddHomeModal ? <AddHomeModal /> : null}
+      {/* pass in showAddHomeModal state */}
+      {showAddHomeModal ? (
+        <AddHomeModal
+          showAddHomeModal={showAddHomeModal}
+          setShowAddHomeModal={setShowAddHomeModal}
+        />
+      ) : null}
       <div className="w-full flex flex-row justify-between h-10">
         <span className="text-4xl font-bold text-dark-gray">
           Manage accounts
         </span>
         <div className="flex flex-row h-10 w-96 justify-between">
-          <button className="h-full rounded-lg border-[1px] border-dark-gray flex flex-row justify-center items-center gap-3 w-[180px]">
+          <button className="h-full rounded-lg border-[1px] border-dark-gray flex flex-row justify-center items-center gap-3 w-[180px] bg-secondary-default">
             <Image
               src={"/manage/addparent.svg"}
               alt="add parent"
@@ -27,7 +33,7 @@ const ManagePage = () => {
             </span>
           </button>
           <button
-            className="h-full rounded-lg border-[1px] border-dark-gray flex flex-row justify-center items-center gap-3 w-[180px]"
+            className="h-full rounded-lg border-[1px] border-dark-gray flex flex-row justify-center items-center gap-3 w-[180px] bg-secondary-default"
             onClick={() => setShowAddHomeModal(!showAddHomeModal)}
           >
             <Image

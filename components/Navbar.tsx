@@ -13,12 +13,12 @@ const Navbar = ({ name }: NavbarProps) => {
         <Image src="/logos/simplysmiles.svg" fill={true} alt="logo" />
       </Link>
 
-      <div className="h-8 w-80 flex flex-row gap-6 mr-24 my-auto justify-end">
+      <div className="h-8 w-80 flex flex-row gap-6 mr-10 my-auto justify-end">
         <span className="flex items-center justify-center my-auto">
           Welcome back, {name}
         </span>
         <button
-          className="rounded-lg h-full w-28 bg-secondary-default text-primary-default cursor-pointer text-base border-none font-bold transition-all hover:bg-secondary-hover active:scale-95 shadow-lg"
+          className="rounded-lg h-full w-[120px] bg-secondary-default text-primary-default cursor-pointer text-base border-none font-bold transition-all hover:bg-secondary-hover active:scale-95 shadow-lg"
           onClick={() => signOut()}
         >
           Log out
