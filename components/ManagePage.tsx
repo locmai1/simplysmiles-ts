@@ -1,18 +1,31 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import AddHomeModal from "./AddHomeModal";
+import AddHomeConfirmModal from "./AddHomeConfirmModal";
 
 const ManagePage = () => {
   const [showAddHomeModal, setShowAddHomeModal] = useState<boolean>(false);
+  const [showAddHomeConfirmModal, setShowAddHomeConfirmModal] =
+    useState<boolean>(false);
   const [showAddParentModal, setShowAddParentModal] = useState<boolean>(false);
 
   return (
     <div className="p-16 w-full h-full flex flex-col relative">
       {/* pass in showAddHomeModal state */}
-      {showAddHomeModal ? (
+      {showAddHomeModal && !showAddHomeConfirmModal ? (
         <AddHomeModal
           showAddHomeModal={showAddHomeModal}
           setShowAddHomeModal={setShowAddHomeModal}
+          showAddHomeConfirmModal={showAddHomeConfirmModal}
+          setShowAddHomeConfirmModal={setShowAddHomeConfirmModal}
+        />
+      ) : null}
+      {!showAddHomeModal && showAddHomeConfirmModal ? (
+        <AddHomeConfirmModal
+          showAddHomeModal={showAddHomeModal}
+          setShowAddHomeModal={setShowAddHomeModal}
+          showAddHomeConfirmModal={showAddHomeConfirmModal}
+          setShowAddHomeConfirmModal={setShowAddHomeConfirmModal}
         />
       ) : null}
       <div className="w-full flex flex-row justify-between h-10">
