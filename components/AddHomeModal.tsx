@@ -246,14 +246,6 @@ const AddHomeModal = ({
           </div>
         </div>
       )}
-      {!showAddHomeModal && showAddHomeConfirmModal && (
-        <AddHomeConfirmModal
-          showAddHomeModal={showAddHomeModal}
-          setShowAddHomeModal={setShowAddHomeModal}
-          showAddHomeConfirmModal={showAddHomeConfirmModal}
-          setShowAddHomeConfirmModal={setShowAddHomeConfirmModal}
-        />
-      )}
     </>
   );
 };
