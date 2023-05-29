@@ -33,7 +33,7 @@ const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
   return (
     <div className="w-full h-full flex flex-row text-dark-gray">
       {/* sidebar */}
-      <div className="w-96 bg-light-green">
+      <div className="min-w-96 min-h-screen bg-light-green">
         <div className="w-full h-full pt-16 flex flex-col gap-2.5">
           <button
             className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center"

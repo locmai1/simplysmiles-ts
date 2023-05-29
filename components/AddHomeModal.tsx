@@ -1,6 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Image from "next/image";
-import AddHomeConfirmModal from "./AddHomeConfirmModal";
+// import AddHomeConfirmModal from "./AddHomeConfirmModal";
 
 type AddHomeModalProps = {
   showAddHomeModal: boolean;
@@ -9,13 +9,84 @@ type AddHomeModalProps = {
   setShowAddHomeConfirmModal: Dispatch<SetStateAction<boolean>>;
 };
 
+type FosterHome = {
+  fosterName: string;
+  celebrationBudget: number;
+  clothesBudget: number;
+  culturalBudget: number;
+  managementBudget: number;
+  educationBudget: number;
+  householdBudget: number;
+  overnightBudget: number;
+  recreationBudget: number;
+  vehicleBudget: number;
+};
+
+const initialFosterHome = {
+  fosterName: "",
+  celebrationBudget: 0,
+  clothesBudget: 0,
+  culturalBudget: 0,
+  managementBudget: 0,
+  educationBudget: 0,
+  householdBudget: 0,
+  overnightBudget: 0,
+  recreationBudget: 0,
+  vehicleBudget: 0,
+};
+
 const AddHomeModal = ({
   showAddHomeModal,
   setShowAddHomeModal,
   showAddHomeConfirmModal,
   setShowAddHomeConfirmModal,
 }: AddHomeModalProps) => {
-  // TODO: make create call
+  const [error, setError] = useState<boolean>(false);
+  const [fosterHomeData, setFosterHomeData] =
+    useState<FosterHome>(initialFosterHome);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // console.log(fosterHomeData);
+    const res = await fetch("/api/fosters/add", {
+      method: "POST",
+      body: JSON.stringify({
+        name: fosterHomeData.fosterName,
+        celebration: fosterHomeData.celebrationBudget,
+        clothes: fosterHomeData.clothesBudget,
+        culturalDev: fosterHomeData.culturalBudget,
+        management: fosterHomeData.managementBudget,
+        education: fosterHomeData.educationBudget,
+        household: fosterHomeData.householdBudget,
+        overnightTravel: fosterHomeData.overnightBudget,
+        recreational: fosterHomeData.recreationBudget,
+        vehicle: fosterHomeData.vehicleBudget,
+      }),
+    });
+    if (res.status === 200) {
+      handleConfirm();
+    } else if (res.status === 400) {
+      setError(!error);
+    }
+  };
+
+  // TODO: re-evaluate null values in onSubmit
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // type number
+    if (+event.target.value >= 0) {
+      setFosterHomeData({
+        ...fosterHomeData,
+        [event.target.name]: +event.target.value,
+      });
+    }
+    // type string
+    else {
+      setFosterHomeData({
+        ...fosterHomeData,
+        [event.target.name]: event.target.value,
+      });
+    }
+  };
 
   const handleCancel = () => {
     setShowAddHomeModal(!showAddHomeModal);
@@ -24,6 +95,11 @@ const AddHomeModal = ({
   const handleConfirm = () => {
     setShowAddHomeModal(!showAddHomeModal);
     setShowAddHomeConfirmModal(!showAddHomeConfirmModal);
+  };
+
+  const getCurrentYear = () => {
+    const date = new Date();
+    return date.getFullYear();
   };
 
   return (
@@ -37,9 +113,12 @@ const AddHomeModal = ({
             </span>
 
             {/* form container */}
-            <form action="" className="flex flex-col h-[492px] w-full mt-9">
+            <form
+              className="flex flex-col h-[492px] w-full mt-9 justify-between"
+              onSubmit={handleSubmit}
+            >
               {/* form name */}
-              <div className="w-full h-[68px] flex flex-col justify-between">
+              <div className="w-full flex flex-col h-28">
                 <div className="h-4 flex flex-row">
                   <span className="text-base font-bold text-dark-gray leading-4">
                     Name
@@ -48,13 +127,31 @@ const AddHomeModal = ({
                     &nbsp;*
                   </span>
                 </div>
+                {error && (
+                  <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mt-3">
+                    <Image
+                      src="/manage/warning.svg"
+                      width={16}
+                      height={16}
+                      alt="warning"
+                      priority={true}
+                    />
+                    <span className="text-dark-red font-semibold text-xs">
+                      There is an existing home with this name
+                    </span>
+                  </div>
+                )}
                 <input
-                  className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
+                  className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
+                  name="fosterName"
                   type="text"
-                ></input>
+                  value={fosterHomeData.fosterName}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               {/* form body */}
-              <div className="h-[340px] w-full mt-20">
+              <div className="h-[340px] w-full">
                 {/* budget header */}
                 <div className="w-full h-10 flex flex-row justify-between">
                   <span className="text-2xl font-bold">
@@ -70,7 +167,7 @@ const AddHomeModal = ({
                         priority={true}
                       />
                       <span className="text-base leading-4 text-dark-gray font-bold">
-                        {"2023"}
+                        {getCurrentYear()}
                       </span>
                     </div>
                   </button>
@@ -89,9 +186,13 @@ const AddHomeModal = ({
                       </div>
                       <input
                         className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
+                        name="celebrationBudget"
                         type="number"
                         placeholder="$"
-                      ></input>
+                        value={fosterHomeData.celebrationBudget}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                     <div className="w-full h-[68px] flex flex-col justify-between">
                       <div className="h-4 flex flex-row">
@@ -104,9 +205,13 @@ const AddHomeModal = ({
                       </div>
                       <input
                         className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
+                        name="managementBudget"
                         type="number"
                         placeholder="$"
-                      ></input>
+                        value={fosterHomeData.managementBudget}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                     <div className="w-full h-[68px] flex flex-col justify-between">
                       <div className="h-4 flex flex-row">
@@ -119,9 +224,13 @@ const AddHomeModal = ({
                       </div>
                       <input
                         className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
+                        name="overnightBudget"
                         type="number"
                         placeholder="$"
-                      ></input>
+                        value={fosterHomeData.overnightBudget}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                   </div>
 
@@ -137,9 +246,13 @@ const AddHomeModal = ({
                       </div>
                       <input
                         className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
+                        name="clothesBudget"
                         type="number"
                         placeholder="$"
-                      ></input>
+                        value={fosterHomeData.clothesBudget}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                     <div className="w-full h-[68px] flex flex-col justify-between">
                       <div className="h-4 flex flex-row">
@@ -152,9 +265,13 @@ const AddHomeModal = ({
                       </div>
                       <input
                         className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
+                        name="educationBudget"
                         type="number"
                         placeholder="$"
-                      ></input>
+                        value={fosterHomeData.educationBudget}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                     <div className="w-full h-[68px] flex flex-col justify-between">
                       <div className="h-4 flex flex-row">
@@ -167,9 +284,13 @@ const AddHomeModal = ({
                       </div>
                       <input
                         className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
+                        name="recreationBudget"
                         type="number"
                         placeholder="$"
-                      ></input>
+                        value={fosterHomeData.recreationBudget}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                   </div>
 
@@ -185,9 +306,13 @@ const AddHomeModal = ({
                       </div>
                       <input
                         className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
+                        name="culturalBudget"
                         type="number"
                         placeholder="$"
-                      ></input>
+                        value={fosterHomeData.culturalBudget}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                     <div className="w-full h-[68px] flex flex-col justify-between">
                       <div className="h-4 flex flex-row">
@@ -200,9 +325,13 @@ const AddHomeModal = ({
                       </div>
                       <input
                         className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
+                        name="householdBudget"
                         type="number"
                         placeholder="$"
-                      ></input>
+                        value={fosterHomeData.householdBudget}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                     <div className="w-full h-[68px] flex flex-col justify-between">
                       <div className="h-4 flex flex-row">
@@ -215,9 +344,13 @@ const AddHomeModal = ({
                       </div>
                       <input
                         className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
+                        name="vehicleBudget"
                         type="number"
                         placeholder="$"
-                      ></input>
+                        value={fosterHomeData.vehicleBudget}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                   </div>
                 </div>
@@ -234,7 +367,8 @@ const AddHomeModal = ({
                   </button>
                   <button
                     className="h-full w-60 bg-primary-default rounded-lg flex justify-center items-center"
-                    onClick={handleConfirm}
+                    type="submit"
+                    // onClick={handleSubmit}
                   >
                     <span className="text-base leading-4 text-secondary-default font-bold">
                       Add home
