@@ -17,9 +17,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET":
       try {
-        const homes = await prisma.fosters.findMany({
+        const homes = await prisma.foster.findMany({
           where: {
-            userIds: [userId],
+            userIds: {
+              has: userId,
+            },
           },
         });
 
@@ -31,6 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
 
         res.status(200).json(homes);
+        return;
       } catch (error) {
         res.status(500).json({
           error: `failed to fetch fosters: ${error}`,

@@ -17,23 +17,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET":
       try {
-        const homes = await prisma.budget.findMany({
+        const budgets = await prisma.budget.findMany({
           where: {
-            userIds: [userId],
+            foster: {
+              is: {
+                id: userId,
+              },
+            },
           },
         });
 
-        if (!homes) {
+        if (!budgets) {
           res.status(404).json({
-            error: `user ${userId} has no associated foster homes`,
+            error: `user ${userId} has no associated homes with budgets`,
           });
           return;
         }
 
-        res.status(200).json(homes);
+        res.status(200).json(budgets);
+        return;
       } catch (error) {
         res.status(500).json({
-          error: `failed to fetch fosters: ${error}`,
+          error: `failed to fetch budgets: ${error}`,
         });
       }
       break;

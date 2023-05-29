@@ -18,8 +18,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET":
       try {
-        const budget = await prisma.findUnique({
-          where: budgetId,
+        const budget = await prisma.budget.findUnique({
+          where: {
+            id: budgetId,
+          },
         });
 
         if (!budget) {

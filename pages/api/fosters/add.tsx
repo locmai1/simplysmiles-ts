@@ -18,34 +18,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST":
       try {
-        // check if admin
-        const { admin } = (await prisma.user.findUnique({
+        const { isAdmin } = (await prisma.user.findUnique({
           where: {
             id: userId,
           },
           select: {
-            admin: true,
+            isAdmin: true,
           },
-        })) ?? { admin: false };
+        })) ?? { isAdmin: false };
 
-        // create foster home if admin
-        // TODO: req.body accepts budget params -> prisma create budget -> get budgetId to create foster
-        if (admin) {
-          // const bodySchema = z.object({
-          //   userIds: z.array(z.string()),
-          //   budgetId: z.string(),
-          //   name: z.string(),
-          // });
-          // const body = bodySchema.parse(JSON.parse(req.body));
-          // const fosterEntry = await prisma.foster.create({
-          //   data: {
-          //     userIds: body.userIds,
-          //     budgetId: body.budgetId,
-          //     name: body.name,
-          //   },
-          // });
-          // res.status(200).json(fosterEntry);
-
+        // check if admin
+        if (isAdmin) {
           const bodySchema = z.object({
             name: z.string(),
             celebration: z.number(),
@@ -60,7 +43,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           });
           const body = bodySchema.parse(JSON.parse(req.body));
 
-          const budget = await prisma.create({
+          // check if existing home
+          const existingHome = await prisma.foster.findUnique({
+            where: {
+              name: body.name,
+            },
+          });
+
+          if (existingHome) {
+            res.status(400).json({
+              error: `already existing home name`,
+            });
+            return;
+          }
+
+          const budget = await prisma.budget.create({
             data: {
               celebration: body.celebration,
               clothes: body.clothes,
@@ -71,9 +68,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               overnightTravel: body.overnightTravel,
               recreational: body.recreational,
               vehicle: body.vehicle,
-            },
-            include: {
-              id: true,
             },
           });
 
@@ -100,6 +94,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }
 
           res.status(200).json(foster);
+          return;
         } else {
           res.status(500).json({
             error: "in order to access this route, please sign in as admin",
@@ -107,10 +102,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           return;
         }
       } catch (error) {
-        res.status(500).json({
+        res.status(400).json({
           error: `failed to create foster home: ${error}`,
         });
       }
+      break;
 
     default:
       res.status(500).json({

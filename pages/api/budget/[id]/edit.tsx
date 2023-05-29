@@ -19,18 +19,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "PATCH":
       try {
-        // check if admin
-        const { admin } = (await prisma.user.findUnique({
+        const { isAdmin } = (await prisma.user.findUnique({
           where: {
             id: userId,
           },
           select: {
-            admin: true,
+            isAdmin: true,
           },
-        })) ?? { admin: false };
+        })) ?? { isAdmin: false };
 
         // create foster home if admin
-        if (admin) {
+        if (isAdmin) {
           const bodySchema = z.object({
             celebration: z.number(),
             clothes: z.number(),

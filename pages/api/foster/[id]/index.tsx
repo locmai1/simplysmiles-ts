@@ -18,8 +18,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET":
       try {
-        const foster = await prisma.findUnique({
-          where: fosterId,
+        const foster = await prisma.foster.findUnique({
+          where: {
+            id: fosterId,
+          },
         });
 
         if (!foster) {
