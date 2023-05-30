@@ -41,7 +41,7 @@ const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
           </button>
         ))
     );
-  }, [homes]);
+  }, [homes, setCurrPage]);
 
   return (
     <div className="w-full h-full flex flex-row text-dark-gray">
