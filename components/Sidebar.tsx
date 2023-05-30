@@ -8,27 +8,40 @@ type SidebarProps = {
 };
 
 const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
-  const [homes, setHomes] = useState<any>();
+  const [homes, setHomes] = useState<any>(null);
   const [homesButtons, setHomesButtons] = useState<React.ReactNode[]>([]);
 
+  // TODO: display the information about the users associated with each foster home
   useEffect(() => {
     // api call to fetch all homes, setHomes
-    // const fetchFostersData = async () => {
-    //   try {
-    //     const response = await fetch("/api/fosters");
-    //     const fosters = await response.json();
-    //     setHomes(fosters);
-    //     console.log(fosters);
-    //   } catch (error) {
-    //     console.log("failed to get foster homes");
-    //   }
-    // };
-    // fetchFostersData();
+    const fetchFostersData = async () => {
+      try {
+        const response = await fetch("/api/fosters");
+        const fosters = await response.json();
+        setHomes(fosters);
+      } catch (error) {
+        console.log(`failed to get foster homes: ${error}`);
+      }
+    };
+    fetchFostersData();
   }, []);
 
+  // TODO: build the ExpensesPage for each foster home
   useEffect(() => {
     // api call to map homes to setHomesButtons
-  }, []);
+    setHomesButtons(
+      homes &&
+        Object.keys(homes!).map((home, i: number) => (
+          <button
+            key={i}
+            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center pl-8"
+            onClick={() => setCurrPage(<div>{homes[home].name}</div>)}
+          >
+            <span className="ml-2">{homes[home].name}</span>
+          </button>
+        ))
+    );
+  }, [homes]);
 
   return (
     <div className="w-full h-full flex flex-row text-dark-gray">
@@ -49,25 +62,7 @@ const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
             <span className="ml-2">Dashboard</span>
           </button>
 
-          {/* TODO: Home Component passing in the Home Id  */}
-          <button
-            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center pl-8"
-            onClick={() => setCurrPage(<div>Home #1</div>)}
-          >
-            <span className="ml-2">Home #1</span>
-          </button>
-          {/* <button
-            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center pl-8"
-            onClick={() => setCurrPage(<div>Home #2</div>)}
-          >
-            <span className="ml-2">Home #2</span>
-          </button>
-          <button
-            className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center pl-8"
-            onClick={() => setCurrPage(<div>Home #3</div>)}
-          >
-            <span className="ml-2">Home #3</span>
-          </button> */}
+          {homesButtons}
 
           <button
             className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center"
