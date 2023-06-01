@@ -10,6 +10,7 @@ const ManagePage = () => {
   // const [showAddParentModal, setShowAddParentModal] = useState<boolean>(false);
   const [users, setUsers] = useState<any>(null);
 
+  // TODO: display the information about the users associated with each foster home
   useEffect(() => {
     const fetchUsersData = async () => {
       try {
@@ -78,6 +79,47 @@ const ManagePage = () => {
       </div>
 
       {/* search & sort */}
+      <div className="w-full h-10 mt-[52px] flex flex-row justify-between">
+        {/* search bar */}
+        <div className="relative w-[495px] h-full flex flex-row items-center z-0">
+          <Image
+            className="absolute ml-6"
+            src={"/manage/search.svg"}
+            alt="magnifying glass"
+            width={24}
+            height={24}
+            priority={true}
+          />
+          <input
+            type="text"
+            className="border-[1px] rounded-[50px] px-14 border-light-gray text-dark-gray w-full h-full"
+            placeholder="Search"
+          />
+        </div>
+        {/* view control */}
+        <div className="flex flex-row h-full w-[88px] justify-between">
+          <button className="h-full w-10 bg-primary-default rounded-lg">
+            <Image
+              className="flex m-auto"
+              src={"/manage/gridview.svg"}
+              alt="grid view"
+              width={24}
+              height={24}
+              priority={true}
+            />
+          </button>
+          <button className="h-full w-10 bg-light-gray rounded-lg">
+            <Image
+              className="flex m-auto"
+              src={"/manage/listview.svg"}
+              alt="grid view"
+              width={24}
+              height={24}
+              priority={true}
+            />
+          </button>
+        </div>
+      </div>
 
       {/* user information */}
     </div>

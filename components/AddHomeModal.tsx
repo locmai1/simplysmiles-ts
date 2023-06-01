@@ -105,7 +105,7 @@ const AddHomeModal = ({
   return (
     <>
       {showAddHomeModal && !showAddHomeConfirmModal && (
-        <div className="w-full h-full absolute flex items-center justify-center backdrop-blur-[2px] backdrop-brightness-75 top-0 left-0">
+        <div className="w-full h-full absolute flex items-center justify-center backdrop-blur-[2px] backdrop-brightness-75 top-0 left-0 z-50">
           <div className="w-[900px] h-[768px] flex m-auto bg-secondary-default rounded-2xl flex-col p-[50px]">
             {/* title */}
             <span className="h-6 font-bold text-dark-gray text-2xl leading-6">
