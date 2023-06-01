@@ -11,8 +11,6 @@ const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
   const [homes, setHomes] = useState<any>(null);
   const [homesButtons, setHomesButtons] = useState<React.ReactNode[]>([]);
 
-  // TODO: display the information about the users associated with each foster home
-  // TODO: set up foster/users to get an object res.json with each home's name and associated users
   useEffect(() => {
     // api call to fetch all homes, setHomes
     const fetchFostersData = async () => {

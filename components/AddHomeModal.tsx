@@ -184,15 +184,20 @@ const AddHomeModal = ({
                           &nbsp;*
                         </span>
                       </div>
-                      <input
-                        className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
-                        name="celebrationBudget"
-                        type="number"
-                        placeholder="$"
-                        value={fosterHomeData.celebrationBudget}
-                        onChange={handleChange}
-                        required
-                      />
+                      <div className="w-full h-10 flex flex-row relative">
+                        <span className="absolute pl-4 leading-10 text-light-gray">
+                          $
+                        </span>
+                        <input
+                          className="border-[1px] border-light-gray rounded-lg w-full h-10 px-7"
+                          name="celebrationBudget"
+                          type="number"
+                          placeholder="$"
+                          value={fosterHomeData.celebrationBudget}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
                     </div>
                     <div className="w-full h-[68px] flex flex-col justify-between">
                       <div className="h-4 flex flex-row">
@@ -203,15 +208,20 @@ const AddHomeModal = ({
                           &nbsp;*
                         </span>
                       </div>
-                      <input
-                        className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
-                        name="managementBudget"
-                        type="number"
-                        placeholder="$"
-                        value={fosterHomeData.managementBudget}
-                        onChange={handleChange}
-                        required
-                      />
+                      <div className="w-full h-10 flex flex-row relative">
+                        <span className="absolute pl-4 leading-10 text-light-gray">
+                          $
+                        </span>
+                        <input
+                          className="border-[1px] border-light-gray rounded-lg w-full h-10 px-7"
+                          name="managementBudget"
+                          type="number"
+                          placeholder="$"
+                          value={fosterHomeData.managementBudget}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
                     </div>
                     <div className="w-full h-[68px] flex flex-col justify-between">
                       <div className="h-4 flex flex-row">
@@ -222,15 +232,20 @@ const AddHomeModal = ({
                           &nbsp;*
                         </span>
                       </div>
-                      <input
-                        className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
-                        name="overnightBudget"
-                        type="number"
-                        placeholder="$"
-                        value={fosterHomeData.overnightBudget}
-                        onChange={handleChange}
-                        required
-                      />
+                      <div className="w-full h-10 flex flex-row relative">
+                        <span className="absolute pl-4 leading-10 text-light-gray">
+                          $
+                        </span>
+                        <input
+                          className="border-[1px] border-light-gray rounded-lg w-full h-10 px-7"
+                          name="overnightBudget"
+                          type="number"
+                          placeholder="$"
+                          value={fosterHomeData.overnightBudget}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -244,15 +259,20 @@ const AddHomeModal = ({
                           &nbsp;*
                         </span>
                       </div>
-                      <input
-                        className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
-                        name="clothesBudget"
-                        type="number"
-                        placeholder="$"
-                        value={fosterHomeData.clothesBudget}
-                        onChange={handleChange}
-                        required
-                      />
+                      <div className="w-full h-10 flex flex-row relative">
+                        <span className="absolute pl-4 leading-10 text-light-gray">
+                          $
+                        </span>
+                        <input
+                          className="border-[1px] border-light-gray rounded-lg w-full h-10 px-7"
+                          name="clothesBudget"
+                          type="number"
+                          placeholder="$"
+                          value={fosterHomeData.clothesBudget}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
                     </div>
                     <div className="w-full h-[68px] flex flex-col justify-between">
                       <div className="h-4 flex flex-row">
@@ -263,15 +283,20 @@ const AddHomeModal = ({
                           &nbsp;*
                         </span>
                       </div>
-                      <input
-                        className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
-                        name="educationBudget"
-                        type="number"
-                        placeholder="$"
-                        value={fosterHomeData.educationBudget}
-                        onChange={handleChange}
-                        required
-                      />
+                      <div className="w-full h-10 flex flex-row relative">
+                        <span className="absolute pl-4 leading-10 text-light-gray">
+                          $
+                        </span>
+                        <input
+                          className="border-[1px] border-light-gray rounded-lg w-full h-10 px-7"
+                          name="educationBudget"
+                          type="number"
+                          placeholder="$"
+                          value={fosterHomeData.educationBudget}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
                     </div>
                     <div className="w-full h-[68px] flex flex-col justify-between">
                       <div className="h-4 flex flex-row">
@@ -282,15 +307,20 @@ const AddHomeModal = ({
                           &nbsp;*
                         </span>
                       </div>
-                      <input
-                        className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
-                        name="recreationBudget"
-                        type="number"
-                        placeholder="$"
-                        value={fosterHomeData.recreationBudget}
-                        onChange={handleChange}
-                        required
-                      />
+                      <div className="w-full h-10 flex flex-row relative">
+                        <span className="absolute pl-4 leading-10 text-light-gray">
+                          $
+                        </span>
+                        <input
+                          className="border-[1px] border-light-gray rounded-lg w-full h-10 px-7"
+                          name="recreationalBudget"
+                          type="number"
+                          placeholder="$"
+                          value={fosterHomeData.recreationBudget}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -304,15 +334,20 @@ const AddHomeModal = ({
                           &nbsp;*
                         </span>
                       </div>
-                      <input
-                        className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
-                        name="culturalBudget"
-                        type="number"
-                        placeholder="$"
-                        value={fosterHomeData.culturalBudget}
-                        onChange={handleChange}
-                        required
-                      />
+                      <div className="w-full h-10 flex flex-row relative">
+                        <span className="absolute pl-4 leading-10 text-light-gray">
+                          $
+                        </span>
+                        <input
+                          className="border-[1px] border-light-gray rounded-lg w-full h-10 px-7"
+                          name="culturalBudget"
+                          type="number"
+                          placeholder="$"
+                          value={fosterHomeData.culturalBudget}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
                     </div>
                     <div className="w-full h-[68px] flex flex-col justify-between">
                       <div className="h-4 flex flex-row">
@@ -323,15 +358,20 @@ const AddHomeModal = ({
                           &nbsp;*
                         </span>
                       </div>
-                      <input
-                        className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
-                        name="householdBudget"
-                        type="number"
-                        placeholder="$"
-                        value={fosterHomeData.householdBudget}
-                        onChange={handleChange}
-                        required
-                      />
+                      <div className="w-full h-10 flex flex-row relative">
+                        <span className="absolute pl-4 leading-10 text-light-gray">
+                          $
+                        </span>
+                        <input
+                          className="border-[1px] border-light-gray rounded-lg w-full h-10 px-7"
+                          name="householdBudget"
+                          type="number"
+                          placeholder="$"
+                          value={fosterHomeData.householdBudget}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
                     </div>
                     <div className="w-full h-[68px] flex flex-col justify-between">
                       <div className="h-4 flex flex-row">
@@ -342,15 +382,20 @@ const AddHomeModal = ({
                           &nbsp;*
                         </span>
                       </div>
-                      <input
-                        className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4"
-                        name="vehicleBudget"
-                        type="number"
-                        placeholder="$"
-                        value={fosterHomeData.vehicleBudget}
-                        onChange={handleChange}
-                        required
-                      />
+                      <div className="w-full h-10 flex flex-row relative">
+                        <span className="absolute pl-4 leading-10 text-light-gray">
+                          $
+                        </span>
+                        <input
+                          className="border-[1px] border-light-gray rounded-lg w-full h-10 px-7"
+                          name="vehicleBudget"
+                          type="number"
+                          placeholder="$"
+                          value={fosterHomeData.vehicleBudget}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
