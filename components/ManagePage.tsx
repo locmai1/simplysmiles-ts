@@ -7,7 +7,21 @@ const ManagePage = () => {
   const [showAddHomeModal, setShowAddHomeModal] = useState<boolean>(false);
   const [showAddHomeConfirmModal, setShowAddHomeConfirmModal] =
     useState<boolean>(false);
-  const [showAddParentModal, setShowAddParentModal] = useState<boolean>(false);
+  // const [showAddParentModal, setShowAddParentModal] = useState<boolean>(false);
+  const [users, setUsers] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchUsersData = async () => {
+      try {
+        const response = await fetch("/api/fosters/users");
+        const allUsers = await response.json();
+        setUsers(allUsers);
+      } catch (error) {
+        console.log(`failed to get users: ${error}`);
+      }
+    };
+    fetchUsersData();
+  }, []);
 
   return (
     <div className="p-16 w-full h-full flex flex-col relative">
@@ -28,6 +42,8 @@ const ManagePage = () => {
           setShowAddHomeConfirmModal={setShowAddHomeConfirmModal}
         />
       ) : null}
+
+      {/* header */}
       <div className="w-full flex flex-row justify-between h-10">
         <span className="text-4xl font-bold text-dark-gray">
           Manage accounts
@@ -60,6 +76,10 @@ const ManagePage = () => {
           </button>
         </div>
       </div>
+
+      {/* search & sort */}
+
+      {/* user information */}
     </div>
   );
 };
