@@ -23,6 +23,7 @@ module.exports = {
         "dark-gray": "#333333",
         "light-gray": "#C5C5C5",
         "light-red": "#EB5757",
+        "divider-gray": "#BDBDBD",
       },
     },
   },

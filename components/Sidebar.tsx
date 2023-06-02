@@ -30,7 +30,7 @@ const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
     // api call to map homes to setHomesButtons
     setHomesButtons(
       homes &&
-        Object.keys(homes!).map((home, i: number) => (
+        Object.keys(homes).map((home, i: number) => (
           <button
             key={i}
             className="rounded-lg transition-all select-none active:font-semibold active:scale-95 mx-24 text-left border-none text-dark-gray text-base font-normal flex flex-row h-8 w-32 justify-start items-center pl-8"
