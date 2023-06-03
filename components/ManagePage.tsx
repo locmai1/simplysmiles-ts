@@ -11,6 +11,7 @@ const ManagePage = () => {
   const [showAddParentConfirmModal, setShowAddParentConfirmModal] =
     useState<boolean>(false);
   const [fostersWithUsers, setFostersWithUsers] = useState<any>(null);
+  const [showListView, setShowListView] = useState<boolean>(true);
 
   // TODO: display the information about the users associated with each foster home
   useEffect(() => {
@@ -99,7 +100,11 @@ const ManagePage = () => {
         </div>
         {/* view control */}
         <div className="flex flex-row h-full w-[88px] justify-between">
-          <button className="h-full w-10 bg-primary-default rounded-lg">
+          <button
+            className="h-full w-10 rounded-lg"
+            style={{ background: showListView ? "#C5C5C5" : "#12368E" }}
+            onClick={() => setShowListView(false)}
+          >
             <Image
               className="flex m-auto"
               src={"/manage/gridview.svg"}
@@ -110,8 +115,9 @@ const ManagePage = () => {
             />
           </button>
           <button
-            className="h-full w-10 bg-light-gray rounded-lg"
-            onClick={() => console.log(fostersWithUsers)}
+            className="h-full w-10 rounded-lg"
+            style={{ background: showListView ? "#12368E" : "#C5C5C5" }}
+            onClick={() => setShowListView(true)}
           >
             <Image
               className="flex m-auto"
@@ -165,84 +171,156 @@ const ManagePage = () => {
                 </div>
               </div>
               {/* table */}
-              <table className="w-full mt-6 mb-12">
-                <thead>
-                  <tr className="w-full h-[60px] bg-secondary-hover ">
-                    <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
-                      Name
-                    </th>
-                    <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
-                      Admin
-                    </th>
-                    <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
-                      Email
-                    </th>
-                    <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
+              {showListView ? (
+                <table className="w-full mt-6 mb-12">
+                  <thead>
+                    <tr className="w-full h-[60px] bg-secondary-hover ">
+                      <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
+                        Name
+                      </th>
+                      <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
+                        Admin
+                      </th>
+                      <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
+                        Email
+                      </th>
+                      <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {fostersWithUsers[foster].users.map((user, i: number) => {
+                      return (
+                        <tr
+                          className="w-full h-[60px] border-b-[1px] border-b-divider-gray bg-secondary-default"
+                          key={i}
+                        >
+                          <td
+                            className="text-left align-center text-base font-normal text-dark-gray px-4"
+                            width={"25%"}
+                          >
+                            {user.name}
+                          </td>
+                          <td
+                            className="text-left align-center text-base font-normal text-dark-gray px-4"
+                            width={"25%"}
+                          >
+                            {user.admin ? "True" : "False"}
+                          </td>
+                          <td
+                            className="text-left align-center text-base font-normal text-dark-gray px-4"
+                            width={"25%"}
+                          >
+                            {user.email}
+                          </td>
+                          <td className="px-4 align-center" width={"25%"}>
+                            <div className="flex flex-row h-6 w-[90px] justify-between">
+                              <button className="h-6 w-6">
+                                <Image
+                                  src={"/manage/edit.svg"}
+                                  alt="edit icon"
+                                  width={24}
+                                  height={24}
+                                  priority={true}
+                                />
+                              </button>
+                              <button className="h-6 w-6">
+                                <Image
+                                  src={"/manage/delete.svg"}
+                                  alt="delete icon"
+                                  width={24}
+                                  height={24}
+                                  priority={true}
+                                />
+                              </button>
+                              <button className="h-6 w-6">
+                                <Image
+                                  src={"/manage/freeze.svg"}
+                                  alt="freeze icon"
+                                  width={24}
+                                  height={24}
+                                  priority={true}
+                                />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              ) : (
+                <div
+                  className="w-full mt-6 mb-12 grid grid-cols-3 gap-6"
+                  style={{
+                    height:
+                      Math.ceil(fostersWithUsers[foster].users.length / 3) *
+                      128,
+                    gridTemplateRows: Math.ceil(
+                      fostersWithUsers[foster].users.length / 3
+                    ),
+                  }}
+                >
                   {fostersWithUsers[foster].users.map((user, i: number) => {
                     return (
-                      <tr
-                        className="w-full h-[60px] border-b-[1px] border-b-divider-gray bg-secondary-default"
-                        key={i}
-                      >
-                        <td
-                          className="text-left align-center text-base font-normal text-dark-gray px-4"
-                          width={"25%"}
+                      <>
+                        <div
+                          className="w-full h-32 border-[1px] border-divider-gray rounded-lg"
+                          key={i}
                         >
-                          {user.name}
-                        </td>
-                        <td
-                          className="text-left align-center text-base font-normal text-dark-gray px-4"
-                          width={"25%"}
-                        >
-                          {user.admin ? "True" : "False"}
-                        </td>
-                        <td
-                          className="text-left align-center text-base font-normal text-dark-gray px-4"
-                          width={"25%"}
-                        >
-                          {user.email}
-                        </td>
-                        <td className="px-4 align-center" width={"25%"}>
-                          <div className="flex flex-row h-6 w-[90px] justify-between">
-                            <button className="h-6 w-6">
-                              <Image
-                                src={"/manage/edit.svg"}
-                                alt="edit icon"
-                                width={24}
-                                height={24}
-                                priority={true}
-                              />
-                            </button>
-                            <button className="h-6 w-6">
-                              <Image
-                                src={"/manage/delete.svg"}
-                                alt="delete icon"
-                                width={24}
-                                height={24}
-                                priority={true}
-                              />
-                            </button>
-                            <button className="h-6 w-6">
-                              <Image
-                                src={"/manage/freeze.svg"}
-                                alt="freeze icon"
-                                width={24}
-                                height={24}
-                                priority={true}
-                              />
-                            </button>
+                          <div className="w-full h-32 flex flex-col p-6 justify-between">
+                            {/* header */}
+                            <div className="w-full h-6 flex items-center justify-between">
+                              <span className=" text-base leading-3 font-semibold text-primary-default">
+                                {user.name}
+                              </span>
+                              <div className="flex flex-row h-6 w-[90px] justify-between">
+                                <button className="h-6 w-6">
+                                  <Image
+                                    src={"/manage/edit.svg"}
+                                    alt="edit icon"
+                                    width={24}
+                                    height={24}
+                                    priority={true}
+                                  />
+                                </button>
+                                <button className="h-6 w-6">
+                                  <Image
+                                    src={"/manage/delete.svg"}
+                                    alt="delete icon"
+                                    width={24}
+                                    height={24}
+                                    priority={true}
+                                  />
+                                </button>
+                                <button className="h-6 w-6">
+                                  <Image
+                                    src={"/manage/freeze.svg"}
+                                    alt="freeze icon"
+                                    width={24}
+                                    height={24}
+                                    priority={true}
+                                  />
+                                </button>
+                              </div>
+                            </div>
+                            {/* info */}
+                            <div className="w-full h-11 flex flex-col justify-between">
+                              <span className="text-base leading-4 font-normal text-dark-gray">
+                                {user.admin ? "Admin" : null}
+                              </span>
+                              <span className="text-base leading-4 font-normal text-dark-gray">
+                                {user.email}
+                              </span>
+                            </div>
                           </div>
-                        </td>
-                      </tr>
+                        </div>
+                      </>
                     );
                   })}
-                </tbody>
-              </table>
+                </div>
+              )}
             </div>
           ))}
       </div>
