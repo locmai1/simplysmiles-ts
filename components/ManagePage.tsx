@@ -65,13 +65,14 @@ const ManagePage = () => {
           setShowEditHomeModal={setShowEditHomeModal}
           showEditHomeConfirmModal={showEditHomeConfirmModal}
           setShowEditHomeConfirmModal={setShowEditHomeConfirmModal}
+          setFosterHomeName={setCurrentFosterName}
         />
       ) : null}
       {!showEditHomeModal && showEditHomeConfirmModal ? (
         <EditHomeConfirmModal
           fosterHomeName={currentFosterName}
           showEditHomeModal={showEditHomeModal}
-          // setShowEditHomeModal={setShowEditHomeModal}
+          setShowEditHomeModal={setShowEditHomeModal}
           showEditHomeConfirmModal={showEditHomeConfirmModal}
           setShowEditHomeConfirmModal={setShowEditHomeConfirmModal}
         />

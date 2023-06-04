@@ -25,7 +25,7 @@ const AddHomeConfirmModal = ({
   return (
     <>
       {!showAddHomeModal && showAddHomeConfirmModal && (
-        <div className="w-full h-full absolute flex items-center justify-center backdrop-blur-[2px] backdrop-brightness-75 top-0 left-0">
+        <div className="w-full h-full absolute flex items-center justify-center backdrop-blur-[2px] backdrop-brightness-75 top-0 left-0 z-50">
           <div className="w-[600px] h-[212px] flex m-auto bg-secondary-default rounded-2xl flex-col p-[50px] justify-between">
             <span className="font-bold text-2xl leading-6 text-dark-gray">
               New home is added

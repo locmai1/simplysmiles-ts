@@ -4,6 +4,7 @@ import Image from "next/image";
 
 type EditHomeModalProps = {
   fosterHomeId: string;
+  setFosterHomeName: Dispatch<SetStateAction<string>>;
   showEditHomeModal: boolean;
   setShowEditHomeModal: Dispatch<SetStateAction<boolean>>;
   showEditHomeConfirmModal: boolean;
@@ -38,6 +39,7 @@ const initialFosterHome = {
 
 const EditHomeModal = ({
   fosterHomeId,
+  setFosterHomeName,
   showEditHomeModal,
   setShowEditHomeModal,
   showEditHomeConfirmModal,
@@ -110,6 +112,7 @@ const EditHomeModal = ({
   };
 
   const handleConfirm = () => {
+    setFosterHomeName(fosterHomeData.fosterName);
     setShowEditHomeModal(!showEditHomeModal);
     setShowEditHomeConfirmModal(!showEditHomeConfirmModal);
   };
@@ -126,7 +129,7 @@ const EditHomeModal = ({
           <div className="w-[900px] h-[768px] flex m-auto bg-secondary-default rounded-2xl flex-col p-[50px]">
             {/* title */}
             <span className="h-6 font-bold text-dark-gray text-2xl leading-6">
-              Add new home
+              Edit home
             </span>
 
             {/* form container */}
@@ -433,7 +436,7 @@ const EditHomeModal = ({
                     // onClick={handleSubmit}
                   >
                     <span className="text-base leading-4 text-secondary-default font-bold">
-                      Add home
+                      Confirm
                     </span>
                   </button>
                 </div>
