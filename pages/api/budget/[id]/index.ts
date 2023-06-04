@@ -37,6 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           error: `failed to fetch budget: ${error}`,
         });
       }
+      break;
 
     default:
       res.status(500).json({

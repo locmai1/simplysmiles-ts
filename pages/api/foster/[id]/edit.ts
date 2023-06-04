@@ -99,6 +99,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           error: `failed to edit foster: ${error}`,
         });
       }
+      break;
 
     default:
       res.status(500).json({

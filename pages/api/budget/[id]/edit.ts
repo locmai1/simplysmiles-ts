@@ -79,6 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           error: `failed to edit budget: ${error}`,
         });
       }
+      break;
 
     default:
       res.status(500).json({
