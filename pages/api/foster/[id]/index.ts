@@ -63,6 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           error: `failed to fetch foster: ${error}`,
         });
       }
+      break;
 
     default:
       res.status(500).json({
