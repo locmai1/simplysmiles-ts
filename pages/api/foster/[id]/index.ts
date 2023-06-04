@@ -31,7 +31,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           return;
         }
 
-        res.status(200).json(foster);
+        const budget = await prisma.budget.findUnique({
+          where: {
+            id: foster.budgetId,
+          },
+        });
+
+        if (!budget) {
+          res.status(404).json({
+            error: `cannot find foster with id ${foster.budgetId}`,
+          });
+          return;
+        }
+
+        const fosterWithBudgetData = {
+          fosterName: foster.name,
+          celebrationBudget: budget.celebration,
+          clothesBudget: budget.clothes,
+          culturalBudget: budget.culturalDev,
+          managementBudget: budget.management,
+          educationBudget: budget.education,
+          householdBudget: budget.household,
+          overnightBudget: budget.overnightTravel,
+          recreationBudget: budget.recreational,
+          vehicleBudget: budget.vehicle,
+        };
+
+        res.status(200).json(fosterWithBudgetData);
       } catch (error) {
         res.status(404).json({
           error: `failed to fetch foster: ${error}`,

@@ -43,6 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           const fostersWithUsersData = fostersWithUsers.map((foster) => {
             return {
               fosterName: foster.name,
+              fosterId: foster.id,
               users: foster.user.map((user) => {
                 return {
                   userId: user.id,

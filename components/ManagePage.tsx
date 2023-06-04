@@ -2,10 +2,17 @@ import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 import AddHomeModal from "./AddHomeModal";
 import AddHomeConfirmModal from "./AddHomeConfirmModal";
+import EditHomeModal from "./EditHomeModal";
+import EditHomeConfirmModal from "./EditHomeConfirmModal";
 
 const ManagePage = () => {
+  const [currentFosterId, setCurrentFosterId] = useState<string>("");
+  const [currentFosterName, setCurrentFosterName] = useState<string>("");
   const [showAddHomeModal, setShowAddHomeModal] = useState<boolean>(false);
   const [showAddHomeConfirmModal, setShowAddHomeConfirmModal] =
+    useState<boolean>(false);
+  const [showEditHomeModal, setShowEditHomeModal] = useState<boolean>(false);
+  const [showEditHomeConfirmModal, setShowEditHomeConfirmModal] =
     useState<boolean>(false);
   const [showAddParentModal, setShowAddParentModal] = useState<boolean>(false);
   const [showAddParentConfirmModal, setShowAddParentConfirmModal] =
@@ -27,6 +34,12 @@ const ManagePage = () => {
     fetchUsersData();
   }, []);
 
+  const handleSelect = (id: string, name: string) => {
+    setCurrentFosterId(id);
+    setCurrentFosterName(name);
+    setShowEditHomeModal(!showEditHomeModal);
+  };
+
   return (
     <div className="p-16 w-full h-full flex flex-col relative">
       {showAddHomeModal && !showAddHomeConfirmModal ? (
@@ -43,6 +56,24 @@ const ManagePage = () => {
           setShowAddHomeModal={setShowAddHomeModal}
           showAddHomeConfirmModal={showAddHomeConfirmModal}
           setShowAddHomeConfirmModal={setShowAddHomeConfirmModal}
+        />
+      ) : null}
+      {showEditHomeModal && !showEditHomeConfirmModal ? (
+        <EditHomeModal
+          fosterHomeId={currentFosterId}
+          showEditHomeModal={showEditHomeModal}
+          setShowEditHomeModal={setShowEditHomeModal}
+          showEditHomeConfirmModal={showEditHomeConfirmModal}
+          setShowEditHomeConfirmModal={setShowEditHomeConfirmModal}
+        />
+      ) : null}
+      {!showEditHomeModal && showEditHomeConfirmModal ? (
+        <EditHomeConfirmModal
+          fosterHomeName={currentFosterName}
+          showEditHomeModal={showEditHomeModal}
+          // setShowEditHomeModal={setShowEditHomeModal}
+          showEditHomeConfirmModal={showEditHomeConfirmModal}
+          setShowEditHomeConfirmModal={setShowEditHomeConfirmModal}
         />
       ) : null}
 
@@ -148,7 +179,10 @@ const ManagePage = () => {
                   <button
                     className="w-6 h-6"
                     onClick={() =>
-                      console.log(fostersWithUsers[foster].users[0])
+                      handleSelect(
+                        fostersWithUsers[foster].fosterId,
+                        fostersWithUsers[foster].fosterName
+                      )
                     }
                   >
                     <Image
