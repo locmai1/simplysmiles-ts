@@ -129,7 +129,7 @@ const EditHomeModal = ({
           <div className="w-[900px] h-[768px] flex m-auto bg-secondary-default rounded-2xl flex-col p-[50px]">
             {/* title */}
             <span className="h-6 font-bold text-dark-gray text-2xl leading-6">
-              Edit home
+              Edit foster home
             </span>
 
             {/* form container */}

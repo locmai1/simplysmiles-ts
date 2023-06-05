@@ -38,7 +38,7 @@ const EditHomeConfirmModal = ({
                 onClick={handleAnother}
               >
                 <span className="text-base leading-4 text-primary-default font-bold">
-                  Edit more
+                  Make another edit
                 </span>
               </button>
               <button

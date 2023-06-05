@@ -4,6 +4,8 @@ import AddHomeModal from "./AddHomeModal";
 import AddHomeConfirmModal from "./AddHomeConfirmModal";
 import EditHomeModal from "./EditHomeModal";
 import EditHomeConfirmModal from "./EditHomeConfirmModal";
+import DeleteHomeModal from "./DeleteHomeModal";
+import DeleteHomeConfirmModal from "./DeleteHomeConfirmModal";
 
 const ManagePage = () => {
   const [currentFosterId, setCurrentFosterId] = useState<string>("");
@@ -13,6 +15,10 @@ const ManagePage = () => {
     useState<boolean>(false);
   const [showEditHomeModal, setShowEditHomeModal] = useState<boolean>(false);
   const [showEditHomeConfirmModal, setShowEditHomeConfirmModal] =
+    useState<boolean>(false);
+  const [showDeleteHomeModal, setShowDeleteHomeModal] =
+    useState<boolean>(false);
+  const [showDeleteHomeConfirmModal, setShowDeleteHomeConfirmModal] =
     useState<boolean>(false);
   const [showAddParentModal, setShowAddParentModal] = useState<boolean>(false);
   const [showAddParentConfirmModal, setShowAddParentConfirmModal] =
@@ -34,10 +40,17 @@ const ManagePage = () => {
     fetchUsersData();
   }, []);
 
-  const handleSelect = (id: string, name: string) => {
+  const handleEditSelect = (id: string, name: string) => {
     setCurrentFosterId(id);
     setCurrentFosterName(name);
     setShowEditHomeModal(!showEditHomeModal);
+  };
+
+  const handleDeleteSelect = (id: string, name: string) => {
+    setCurrentFosterId(id);
+    setCurrentFosterName(name);
+    setShowDeleteHomeModal(!showDeleteHomeModal);
+    console.log(showDeleteHomeModal);
   };
 
   return (
@@ -61,11 +74,11 @@ const ManagePage = () => {
       {showEditHomeModal && !showEditHomeConfirmModal ? (
         <EditHomeModal
           fosterHomeId={currentFosterId}
+          setFosterHomeName={setCurrentFosterName}
           showEditHomeModal={showEditHomeModal}
           setShowEditHomeModal={setShowEditHomeModal}
           showEditHomeConfirmModal={showEditHomeConfirmModal}
           setShowEditHomeConfirmModal={setShowEditHomeConfirmModal}
-          setFosterHomeName={setCurrentFosterName}
         />
       ) : null}
       {!showEditHomeModal && showEditHomeConfirmModal ? (
@@ -75,6 +88,25 @@ const ManagePage = () => {
           setShowEditHomeModal={setShowEditHomeModal}
           showEditHomeConfirmModal={showEditHomeConfirmModal}
           setShowEditHomeConfirmModal={setShowEditHomeConfirmModal}
+        />
+      ) : null}
+      {showDeleteHomeModal && !showDeleteHomeConfirmModal ? (
+        <DeleteHomeModal
+          fosterHomeId={currentFosterId}
+          fosterHomeName={currentFosterName}
+          showDeleteHomeModal={showDeleteHomeModal}
+          setShowDeleteHomeModal={setShowDeleteHomeModal}
+          showDeleteHomeConfirmModal={showDeleteHomeConfirmModal}
+          setShowDeleteHomeConfirmModal={setShowDeleteHomeConfirmModal}
+        />
+      ) : null}
+      {!showDeleteHomeModal && showDeleteHomeConfirmModal ? (
+        <DeleteHomeConfirmModal
+          fosterHomeName={currentFosterName}
+          showDeleteHomeModal={showDeleteHomeModal}
+          setShowDeleteHomeModal={setShowDeleteHomeModal}
+          showDeleteHomeConfirmModal={showDeleteHomeConfirmModal}
+          setShowDeleteHomeConfirmModal={setShowDeleteHomeConfirmModal}
         />
       ) : null}
 
@@ -180,7 +212,7 @@ const ManagePage = () => {
                   <button
                     className="w-6 h-6"
                     onClick={() =>
-                      handleSelect(
+                      handleEditSelect(
                         fostersWithUsers[foster].fosterId,
                         fostersWithUsers[foster].fosterName
                       )
@@ -194,7 +226,15 @@ const ManagePage = () => {
                       priority={true}
                     />
                   </button>
-                  <button className="w-6 h-6">
+                  <button
+                    className="w-6 h-6"
+                    onClick={() =>
+                      handleDeleteSelect(
+                        fostersWithUsers[foster].fosterId,
+                        fostersWithUsers[foster].fosterName
+                      )
+                    }
+                  >
                     <Image
                       src={"/manage/delete.svg"}
                       alt="delete icon"
