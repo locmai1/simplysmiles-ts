@@ -18,6 +18,7 @@ const Sidebar = ({ currPage, setCurrPage }: SidebarProps) => {
         const response = await fetch("/api/fosters");
         const fosters = await response.json();
         setHomes(fosters);
+        // console.log(homes);
       } catch (error) {
         console.log(`failed to get foster homes: ${error}`);
       }

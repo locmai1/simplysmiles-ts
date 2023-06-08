@@ -28,15 +28,46 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
         })) ?? { isAdmin: false };
 
-        // create foster home if admin
         if (isAdmin) {
-          const deletedFoster = await prisma.foster.delete({
+          const foster = await prisma.foster.findUnique({
             where: {
               id: fosterId,
             },
+            select: {
+              budgetId: true,
+            },
           });
 
-          if (!deletedFoster) {
+          if (!foster) {
+            res.status(404).json({
+              error: `failed to get budget of foster with id: ${fosterId}`,
+            });
+          }
+
+          const disconnect = await prisma.user.updateMany({
+            where: {
+              fosterId: fosterId,
+            },
+            data: {
+              fosterId: {
+                set: null,
+              },
+            },
+          });
+
+          if (!disconnect) {
+            res.status(404).json({
+              error: `failed to disconnect foster from users`,
+            });
+          }
+
+          const deleted = await prisma.budget.delete({
+            where: {
+              id: foster.budgetId,
+            },
+          });
+
+          if (!deleted) {
             res.status(404).json({
               error: `failed to delete foster with id: ${fosterId}`,
             });

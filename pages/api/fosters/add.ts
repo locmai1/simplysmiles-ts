@@ -80,7 +80,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
           const foster = await prisma.foster.create({
             data: {
-              userIds: [userId],
               budgetId: budget.id,
               name: body.name,
             },
@@ -98,7 +97,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               id: userId,
             },
             data: {
-              fosterIds: [foster.id],
+              fosterId: foster.id,
             },
           });
 

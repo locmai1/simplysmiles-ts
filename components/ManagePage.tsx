@@ -26,13 +26,16 @@ const ManagePage = () => {
   const [fostersWithUsers, setFostersWithUsers] = useState<any>(null);
   const [showListView, setShowListView] = useState<boolean>(true);
 
-  // TODO: display the information about the users associated with each foster home
+  // TODO: make a section for users with no foster home
+  // TODO: change add home route to not include any users upon creation
+  // TODO: figure out credentialsprovider for nextauth
   useEffect(() => {
     const fetchUsersData = async () => {
       try {
         const response = await fetch("/api/fosters/users");
         const fostersAndUsers = await response.json();
         setFostersWithUsers(fostersAndUsers);
+        // console.log(fostersAndUsers);
       } catch (error) {
         console.log(`failed to get users: ${error}`);
       }
@@ -50,7 +53,7 @@ const ManagePage = () => {
     setCurrentFosterId(id);
     setCurrentFosterName(name);
     setShowDeleteHomeModal(!showDeleteHomeModal);
-    console.log(showDeleteHomeModal);
+    // console.log(showDeleteHomeModal);
   };
 
   return (

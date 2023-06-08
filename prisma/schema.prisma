@@ -43,8 +43,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   isAdmin       Boolean   @default(false)
-  fosterIds     String[]  @db.ObjectId
-  foster        Foster[]  @relation(fields: [fosterIds], references: [id])
+  fosterId      String?   @db.ObjectId
+  foster        Foster?   @relation(fields: [fosterId], references: [id])
   expenses      Expense[]
 }
 
@@ -78,8 +78,7 @@ model Expense {
 
 model Foster {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  userIds    String[]  @db.ObjectId
-  user       User[]    @relation(fields: [userIds], references: [id])
+  user       User[]
   budgetId   String    @unique @db.ObjectId
   budget     Budget    @relation(fields: [budgetId], references: [id], onDelete: Cascade)
   expenses   Expense[]

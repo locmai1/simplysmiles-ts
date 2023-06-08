@@ -17,13 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET":
       try {
-        const homes = await prisma.foster.findMany({
-          where: {
-            userIds: {
-              has: userId,
-            },
-          },
-        });
+        const homes = await prisma.foster.findMany();
 
         if (!homes) {
           res.status(404).json({
