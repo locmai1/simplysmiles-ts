@@ -23,24 +23,38 @@ const ManagePage = () => {
   const [showAddParentModal, setShowAddParentModal] = useState<boolean>(false);
   const [showAddParentConfirmModal, setShowAddParentConfirmModal] =
     useState<boolean>(false);
-  const [fostersWithUsers, setFostersWithUsers] = useState<any>(null);
+  const [usersNoFosterData, setUsersNoFosterData] = useState<any>(null);
+  const [usersFosterData, setUsersFosterData] = useState<any>(null);
   const [showListView, setShowListView] = useState<boolean>(true);
 
   // TODO: make a section for users with no foster home
   // TODO: change add home route to not include any users upon creation
   // TODO: figure out credentialsprovider for nextauth
+  const fetchUsersFosterData = async () => {
+    try {
+      const response = await fetch("/api/fosters/parents");
+      const data = await response.json();
+      setUsersFosterData(data);
+      // console.log(fostersAndUsers);
+    } catch (error) {
+      console.log(`failed to get users with fosters: ${error}`);
+    }
+  };
+
+  const fetchUsersNoFosterData = async () => {
+    try {
+      const response = await fetch("/api/fosters/users");
+      const data = await response.json();
+      setUsersNoFosterData(data);
+      console.log(data);
+    } catch (error) {
+      console.log(`failed to get users with no fosters: ${error}`);
+    }
+  };
+
   useEffect(() => {
-    const fetchUsersData = async () => {
-      try {
-        const response = await fetch("/api/fosters/parents");
-        const fostersAndUsers = await response.json();
-        setFostersWithUsers(fostersAndUsers);
-        // console.log(fostersAndUsers);
-      } catch (error) {
-        console.log(`failed to get users: ${error}`);
-      }
-    };
-    fetchUsersData();
+    fetchUsersFosterData();
+    fetchUsersNoFosterData();
   }, []);
 
   const handleEditSelect = (id: string, name: string) => {
@@ -200,15 +214,110 @@ const ManagePage = () => {
 
       {/* user information */}
       <div className="w-full flex flex-col overflow-y-auto mt-12">
-        {fostersWithUsers &&
-          Object.keys(fostersWithUsers).map((foster, i: number) => (
+        <div className="w-full h-full flex flex-col">
+          {/* header */}
+          <div className="flex flex-row w-full h-6 justify-between">
+            {/* title of home */}
+            <span className="font-bold text-dark-gray text-xl leading-6">
+              {usersNoFosterData && usersNoFosterData.fosterName}
+            </span>
+          </div>
+          {showListView ? (
+            <table className="w-full mt-6 mb-12">
+              <thead>
+                <tr className="w-full h-[60px] bg-secondary-hover ">
+                  <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
+                    Name
+                  </th>
+                  <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
+                    Admin
+                  </th>
+                  <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
+                    Email
+                  </th>
+                  <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {usersNoFosterData &&
+                  Object.keys(usersNoFosterData.users).map(
+                    (user, i: number) => {
+                      return (
+                        <tr
+                          className="w-full h-[60px] border-b-[1px] border-b-divider-gray bg-secondary-default"
+                          key={i}
+                        >
+                          <td
+                            className="text-left align-center text-base font-normal text-dark-gray px-4"
+                            width={"25%"}
+                          >
+                            {usersNoFosterData.users[user].name}
+                          </td>
+                          <td
+                            className="text-left align-center text-base font-normal text-dark-gray px-4"
+                            width={"25%"}
+                          >
+                            {usersNoFosterData.users[user].admin
+                              ? "True"
+                              : "False"}
+                          </td>
+                          <td
+                            className="text-left align-center text-base font-normal text-dark-gray px-4"
+                            width={"25%"}
+                          >
+                            {usersNoFosterData.users[user].email}
+                          </td>
+                          <td className="px-4 align-center" width={"25%"}>
+                            <div className="flex flex-row h-6 w-[90px] justify-between">
+                              <button className="h-6 w-6">
+                                <Image
+                                  src={"/manage/edit.svg"}
+                                  alt="edit icon"
+                                  width={24}
+                                  height={24}
+                                  priority={true}
+                                />
+                              </button>
+                              <button className="h-6 w-6">
+                                <Image
+                                  src={"/manage/delete.svg"}
+                                  alt="delete icon"
+                                  width={24}
+                                  height={24}
+                                  priority={true}
+                                />
+                              </button>
+                              <button className="h-6 w-6">
+                                <Image
+                                  src={"/manage/freeze.svg"}
+                                  alt="freeze icon"
+                                  width={24}
+                                  height={24}
+                                  priority={true}
+                                />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    }
+                  )}
+              </tbody>
+            </table>
+          ) : null}
+        </div>
+
+        {usersFosterData &&
+          Object.keys(usersFosterData).map((foster, i: number) => (
             // each home section
             <div className="w-full h-full flex flex-col" key={i}>
               {/* header */}
               <div className="flex flex-row w-full h-6 justify-between">
                 {/* title of home */}
                 <span className="font-bold text-dark-gray text-xl leading-6">
-                  {fostersWithUsers[foster].fosterName}
+                  {usersFosterData[foster].fosterName}
                 </span>
                 {/* home control buttons */}
                 <div className="h-full w-14 justify-between flex flex-row">
@@ -216,8 +325,8 @@ const ManagePage = () => {
                     className="w-6 h-6"
                     onClick={() =>
                       handleEditSelect(
-                        fostersWithUsers[foster].fosterId,
-                        fostersWithUsers[foster].fosterName
+                        usersFosterData[foster].fosterId,
+                        usersFosterData[foster].fosterName
                       )
                     }
                   >
@@ -233,8 +342,8 @@ const ManagePage = () => {
                     className="w-6 h-6"
                     onClick={() =>
                       handleDeleteSelect(
-                        fostersWithUsers[foster].fosterId,
-                        fostersWithUsers[foster].fosterName
+                        usersFosterData[foster].fosterId,
+                        usersFosterData[foster].fosterName
                       )
                     }
                   >
@@ -268,7 +377,7 @@ const ManagePage = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {fostersWithUsers[foster].users.map((user, i: number) => {
+                    {usersFosterData[foster].users.map((user, i: number) => {
                       return (
                         <tr
                           className="w-full h-[60px] border-b-[1px] border-b-divider-gray bg-secondary-default"
@@ -333,14 +442,13 @@ const ManagePage = () => {
                   className="w-full mt-6 mb-12 grid grid-cols-3 gap-6"
                   style={{
                     height:
-                      Math.ceil(fostersWithUsers[foster].users.length / 3) *
-                      128,
+                      Math.ceil(usersFosterData[foster].users.length / 3) * 128,
                     gridTemplateRows: Math.ceil(
-                      fostersWithUsers[foster].users.length / 3
+                      usersFosterData[foster].users.length / 3
                     ),
                   }}
                 >
-                  {fostersWithUsers[foster].users.map((user, i: number) => {
+                  {usersFosterData[foster].users.map((user, i: number) => {
                     return (
                       <>
                         <div

@@ -27,42 +27,76 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         })) ?? { isAdmin: false };
 
         if (isAdmin) {
-          const fostersWithUsers = await prisma.foster.findMany({
-            include: {
-              user: true,
+          // const fostersWithUsers = await prisma.foster.findMany({
+          //   include: {
+          //     user: true,
+          //   },
+          // });
+
+          // if (!fostersWithUsers) {
+          //   res.status(404).json({
+          //     error: `failed to fetch all fosters`,
+          //   });
+          //   return;
+          // }
+
+          // const fostersWithUsersData = fostersWithUsers.map((foster) => {
+          //   return {
+          //     fosterName: foster.name,
+          //     fosterId: foster.id,
+          //     users: foster.user.map((user) => {
+          //       return {
+          //         userId: user.id,
+          //         name: user.name,
+          //         email: user.email,
+          //         admin: user.isAdmin,
+          //       };
+          //     }),
+          //   };
+          // });
+
+          // if (!fostersWithUsersData) {
+          //   res.status(404).json({
+          //     error: `failed to fetch all users for each foster`,
+          //   });
+          //   return;
+          // }
+
+          // res.status(200).json(fostersWithUsersData);
+
+          const noFostersUsers = await prisma.user.findMany({
+            where: {
+              foster: null,
             },
           });
 
-          if (!fostersWithUsers) {
+          if (!noFostersUsers) {
             res.status(404).json({
-              error: `failed to fetch all fosters`,
+              error: `failed to get all users with no foster`,
             });
-            return;
           }
 
-          const fostersWithUsersData = fostersWithUsers.map((foster) => {
-            return {
-              fosterName: foster.name,
-              fosterId: foster.id,
-              users: foster.user.map((user) => {
-                return {
-                  userId: user.id,
-                  name: user.name,
-                  email: user.email,
-                  admin: user.isAdmin,
-                };
-              }),
-            };
-          });
+          const noFostersData = {
+            fosterName: "No Foster Home",
+            users: noFostersUsers.map((user) => {
+              return {
+                userId: user.id,
+                name: user.name,
+                email: user.email,
+                admin: user.isAdmin,
+              };
+            }),
+          };
 
-          if (!fostersWithUsersData) {
+          if (!noFostersData) {
             res.status(404).json({
-              error: `failed to fetch all users for each foster`,
+              error: `failed to get users' information`,
             });
-            return;
           }
 
-          res.status(200).json(fostersWithUsersData);
+          // console.log(noFostersData);
+
+          res.status(200).json(noFostersData);
         } else {
           res.status(500).json({
             error: "in order to access this route, please sign in as admin",

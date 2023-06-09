@@ -92,21 +92,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             return;
           }
 
-          const user = await prisma.user.update({
-            where: {
-              id: userId,
-            },
-            data: {
-              fosterId: foster.id,
-            },
-          });
+          // const user = await prisma.user.update({
+          //   where: {
+          //     id: userId,
+          //   },
+          //   data: {
+          //     fosterId: foster.id,
+          //   },
+          // });
 
-          if (!user) {
-            res.status(404).json({
-              error: `failed to add foster to user`,
-            });
-            return;
-          }
+          // if (!user) {
+          //   res.status(404).json({
+          //     error: `failed to add foster to user`,
+          //   });
+          //   return;
+          // }
 
           res.status(200).json(foster);
           return;
