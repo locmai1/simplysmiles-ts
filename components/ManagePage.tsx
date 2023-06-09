@@ -32,7 +32,7 @@ const ManagePage = () => {
   useEffect(() => {
     const fetchUsersData = async () => {
       try {
-        const response = await fetch("/api/fosters/users");
+        const response = await fetch("/api/fosters/parents");
         const fostersAndUsers = await response.json();
         setFostersWithUsers(fostersAndUsers);
         // console.log(fostersAndUsers);

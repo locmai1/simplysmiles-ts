@@ -10,7 +10,12 @@ const Navbar = ({ name }: NavbarProps) => {
   return (
     <nav className="h-20 w-full bg-primary-default flex justify-between">
       <Link href="/" className="w-36 h-11 flex m-auto ml-24 relative">
-        <Image src="/logos/simplysmiles.svg" fill={true} alt="logo" />
+        <Image
+          src="/logos/simplysmiles.svg"
+          fill={true}
+          alt="logo"
+          priority={true}
+        />
       </Link>
 
       <div className="h-8 w-80 flex flex-row gap-6 mr-10 my-auto justify-end">
