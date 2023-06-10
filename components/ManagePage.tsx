@@ -6,10 +6,15 @@ import EditHomeModal from "./EditHomeModal";
 import EditHomeConfirmModal from "./EditHomeConfirmModal";
 import DeleteHomeModal from "./DeleteHomeModal";
 import DeleteHomeConfirmModal from "./DeleteHomeConfirmModal";
+import ManagePageTable from "./ManagePageTable";
 
 const ManagePage = () => {
   const [currentFosterId, setCurrentFosterId] = useState<string>("");
   const [currentFosterName, setCurrentFosterName] = useState<string>("");
+  const [usersNoFosterData, setUsersNoFosterData] = useState<any>(null);
+  const [usersFosterData, setUsersFosterData] = useState<any>(null);
+  const [showListView, setShowListView] = useState<boolean>(true);
+
   const [showAddHomeModal, setShowAddHomeModal] = useState<boolean>(false);
   const [showAddHomeConfirmModal, setShowAddHomeConfirmModal] =
     useState<boolean>(false);
@@ -20,21 +25,20 @@ const ManagePage = () => {
     useState<boolean>(false);
   const [showDeleteHomeConfirmModal, setShowDeleteHomeConfirmModal] =
     useState<boolean>(false);
-  const [showAddParentModal, setShowAddParentModal] = useState<boolean>(false);
-  const [showAddParentConfirmModal, setShowAddParentConfirmModal] =
-    useState<boolean>(false);
-  const [usersNoFosterData, setUsersNoFosterData] = useState<any>(null);
-  const [usersFosterData, setUsersFosterData] = useState<any>(null);
-  const [showListView, setShowListView] = useState<boolean>(true);
+  // const [showAddParentModal, setShowAddParentModal] = useState<boolean>(false);
+  // const [showAddParentConfirmModal, setShowAddParentConfirmModal] =
+  //   useState<boolean>(false);
 
-  // TODO: componentize tables for users
   // TODO: figure out credentialsprovider for nextauth
   const fetchUsersFosterData = async () => {
     try {
       const response = await fetch("/api/fosters/parents");
-      const data = await response.json();
-      setUsersFosterData(data);
-      // console.log(fostersAndUsers);
+      if (response.status === 200) {
+        const data = await response.json();
+        setUsersFosterData(data);
+      } else {
+        setUsersFosterData(null);
+      }
     } catch (error) {
       console.log(`failed to get users with fosters: ${error}`);
     }
@@ -43,9 +47,12 @@ const ManagePage = () => {
   const fetchUsersNoFosterData = async () => {
     try {
       const response = await fetch("/api/fosters/users");
-      const data = await response.json();
-      setUsersNoFosterData(data);
-      console.log(data);
+      if (response.status === 200) {
+        const data = await response.json();
+        setUsersNoFosterData(data);
+      } else {
+        setUsersNoFosterData(null);
+      }
     } catch (error) {
       console.log(`failed to get users with no fosters: ${error}`);
     }
@@ -55,19 +62,6 @@ const ManagePage = () => {
     fetchUsersFosterData();
     fetchUsersNoFosterData();
   }, []);
-
-  const handleEditSelect = (id: string, name: string) => {
-    setCurrentFosterId(id);
-    setCurrentFosterName(name);
-    setShowEditHomeModal(!showEditHomeModal);
-  };
-
-  const handleDeleteSelect = (id: string, name: string) => {
-    setCurrentFosterId(id);
-    setCurrentFosterName(name);
-    setShowDeleteHomeModal(!showDeleteHomeModal);
-    // console.log(showDeleteHomeModal);
-  };
 
   return (
     <div className="p-16 w-full h-full flex flex-col relative">
@@ -178,6 +172,7 @@ const ManagePage = () => {
             placeholder="Search"
           />
         </div>
+
         {/* view control */}
         <div className="flex flex-row h-full w-[88px] justify-between">
           <button
@@ -213,363 +208,35 @@ const ManagePage = () => {
 
       {/* user information */}
       <div className="w-full flex flex-col overflow-y-auto mt-12">
-        <div className="w-full h-full flex flex-col">
-          {/* header */}
-          <div className="flex flex-row w-full h-6 justify-between">
-            {/* title of home */}
-            <span className="font-bold text-dark-gray text-xl leading-6">
-              {usersNoFosterData && usersNoFosterData.fosterName}
-            </span>
-          </div>
-          {showListView ? (
-            <table className="w-full mt-6 mb-12">
-              <thead>
-                <tr className="w-full h-[60px] bg-secondary-hover ">
-                  <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
-                    Name
-                  </th>
-                  <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
-                    Admin
-                  </th>
-                  <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
-                    Email
-                  </th>
-                  <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {usersNoFosterData &&
-                  // Object.keys(usersNoFosterData.users).map(
-                  //   (user, i: number) => {
-                  usersNoFosterData.users.map((user, i: number) => {
-                    return (
-                      <tr
-                        className="w-full h-[60px] border-b-[1px] border-b-divider-gray bg-secondary-default"
-                        key={i}
-                      >
-                        <td
-                          className="text-left align-center text-base font-normal text-dark-gray px-4"
-                          width={"25%"}
-                        >
-                          {/* {usersNoFosterData.users[user].name} */}
-                          {user.name}
-                        </td>
-                        <td
-                          className="text-left align-center text-base font-normal text-dark-gray px-4"
-                          width={"25%"}
-                        >
-                          {/* {usersNoFosterData.users[user].admin */}
-                          {user.admin ? "True" : "False"}
-                        </td>
-                        <td
-                          className="text-left align-center text-base font-normal text-dark-gray px-4"
-                          width={"25%"}
-                        >
-                          {/* {usersNoFosterData.users[user].email} */}
-                          {user.email}
-                        </td>
-                        <td className="px-4 align-center" width={"25%"}>
-                          <div className="flex flex-row h-6 w-[90px] justify-between">
-                            <button className="h-6 w-6">
-                              <Image
-                                src={"/manage/edit.svg"}
-                                alt="edit icon"
-                                width={24}
-                                height={24}
-                                priority={true}
-                              />
-                            </button>
-                            <button className="h-6 w-6">
-                              <Image
-                                src={"/manage/delete.svg"}
-                                alt="delete icon"
-                                width={24}
-                                height={24}
-                                priority={true}
-                              />
-                            </button>
-                            <button className="h-6 w-6">
-                              <Image
-                                src={"/manage/freeze.svg"}
-                                alt="freeze icon"
-                                width={24}
-                                height={24}
-                                priority={true}
-                              />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
-          ) : (
-            <div
-              className="w-full mt-6 mb-12 grid grid-cols-3 gap-6"
-              style={{
-                height: Math.ceil(usersNoFosterData.users.length / 3) * 128,
-                gridTemplateRows: Math.ceil(usersNoFosterData.users.length / 3),
-              }}
-            >
-              {usersNoFosterData.users.map((user, i: number) => {
-                return (
-                  <div
-                    className="w-full h-32 border-[1px] border-divider-gray rounded-lg"
-                    key={i}
-                  >
-                    <div className="w-full h-32 flex flex-col p-6 justify-between">
-                      {/* header */}
-                      <div className="w-full h-6 flex items-center justify-between">
-                        <span className=" text-base leading-3 font-semibold text-primary-default">
-                          {user.name}
-                        </span>
-                        <div className="flex flex-row h-6 w-[90px] justify-between">
-                          <button className="h-6 w-6">
-                            <Image
-                              src={"/manage/edit.svg"}
-                              alt="edit icon"
-                              width={24}
-                              height={24}
-                              priority={true}
-                            />
-                          </button>
-                          <button className="h-6 w-6">
-                            <Image
-                              src={"/manage/delete.svg"}
-                              alt="delete icon"
-                              width={24}
-                              height={24}
-                              priority={true}
-                            />
-                          </button>
-                          <button className="h-6 w-6">
-                            <Image
-                              src={"/manage/freeze.svg"}
-                              alt="freeze icon"
-                              width={24}
-                              height={24}
-                              priority={true}
-                            />
-                          </button>
-                        </div>
-                      </div>
-                      {/* info */}
-                      <div className="w-full h-11 flex flex-col justify-between">
-                        <span className="text-base leading-4 font-normal text-dark-gray">
-                          {user.admin ? "Admin" : null}
-                        </span>
-                        <span className="text-base leading-4 font-normal text-dark-gray">
-                          {user.email}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
+        {usersNoFosterData && (
+          <ManagePageTable
+            usersFosterData={usersNoFosterData}
+            showListView={showListView}
+            setCurrentFosterId={setCurrentFosterId}
+            setCurrentFosterName={setCurrentFosterName}
+            showHomeControls={false}
+            showEditHomeModal={showEditHomeModal}
+            setShowEditHomeModal={setShowEditHomeModal}
+            showDeleteHomeModal={showDeleteHomeModal}
+            setShowDeleteHomeModal={setShowDeleteHomeModal}
+          />
+        )}
 
         {usersFosterData &&
           Object.keys(usersFosterData).map((foster, i: number) => (
             // each home section
-            <div className="w-full h-full flex flex-col" key={i}>
-              {/* header */}
-              <div className="flex flex-row w-full h-6 justify-between">
-                {/* title of home */}
-                <span className="font-bold text-dark-gray text-xl leading-6">
-                  {usersFosterData[foster].fosterName}
-                </span>
-                {/* home control buttons */}
-                <div className="h-full w-14 justify-between flex flex-row">
-                  <button
-                    className="w-6 h-6"
-                    onClick={() =>
-                      handleEditSelect(
-                        usersFosterData[foster].fosterId,
-                        usersFosterData[foster].fosterName
-                      )
-                    }
-                  >
-                    <Image
-                      src={"/manage/edit.svg"}
-                      alt="edit icon"
-                      width={24}
-                      height={24}
-                      priority={true}
-                    />
-                  </button>
-                  <button
-                    className="w-6 h-6"
-                    onClick={() =>
-                      handleDeleteSelect(
-                        usersFosterData[foster].fosterId,
-                        usersFosterData[foster].fosterName
-                      )
-                    }
-                  >
-                    <Image
-                      src={"/manage/delete.svg"}
-                      alt="delete icon"
-                      width={24}
-                      height={24}
-                      priority={true}
-                    />
-                  </button>
-                </div>
-              </div>
-              {/* table */}
-              {showListView ? (
-                <table className="w-full mt-6 mb-12">
-                  <thead>
-                    <tr className="w-full h-[60px] bg-secondary-hover ">
-                      <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
-                        Name
-                      </th>
-                      <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
-                        Admin
-                      </th>
-                      <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
-                        Email
-                      </th>
-                      <th className="text-left align-center text-base font-semibold text-dark-gray px-4">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {usersFosterData[foster].users.map((user, i: number) => {
-                      return (
-                        <tr
-                          className="w-full h-[60px] border-b-[1px] border-b-divider-gray bg-secondary-default"
-                          key={i}
-                        >
-                          <td
-                            className="text-left align-center text-base font-normal text-dark-gray px-4"
-                            width={"25%"}
-                          >
-                            {user.name}
-                          </td>
-                          <td
-                            className="text-left align-center text-base font-normal text-dark-gray px-4"
-                            width={"25%"}
-                          >
-                            {user.admin ? "True" : "False"}
-                          </td>
-                          <td
-                            className="text-left align-center text-base font-normal text-dark-gray px-4"
-                            width={"25%"}
-                          >
-                            {user.email}
-                          </td>
-                          <td className="px-4 align-center" width={"25%"}>
-                            <div className="flex flex-row h-6 w-[90px] justify-between">
-                              <button className="h-6 w-6">
-                                <Image
-                                  src={"/manage/edit.svg"}
-                                  alt="edit icon"
-                                  width={24}
-                                  height={24}
-                                  priority={true}
-                                />
-                              </button>
-                              <button className="h-6 w-6">
-                                <Image
-                                  src={"/manage/delete.svg"}
-                                  alt="delete icon"
-                                  width={24}
-                                  height={24}
-                                  priority={true}
-                                />
-                              </button>
-                              <button className="h-6 w-6">
-                                <Image
-                                  src={"/manage/freeze.svg"}
-                                  alt="freeze icon"
-                                  width={24}
-                                  height={24}
-                                  priority={true}
-                                />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              ) : (
-                <div
-                  className="w-full mt-6 mb-12 grid grid-cols-3 gap-6"
-                  style={{
-                    height:
-                      Math.ceil(usersFosterData[foster].users.length / 3) * 128,
-                    gridTemplateRows: Math.ceil(
-                      usersFosterData[foster].users.length / 3
-                    ),
-                  }}
-                >
-                  {usersFosterData[foster].users.map((user, i: number) => {
-                    return (
-                      <div
-                        className="w-full h-32 border-[1px] border-divider-gray rounded-lg"
-                        key={i}
-                      >
-                        <div className="w-full h-32 flex flex-col p-6 justify-between">
-                          {/* header */}
-                          <div className="w-full h-6 flex items-center justify-between">
-                            <span className=" text-base leading-3 font-semibold text-primary-default">
-                              {user.name}
-                            </span>
-                            <div className="flex flex-row h-6 w-[90px] justify-between">
-                              <button className="h-6 w-6">
-                                <Image
-                                  src={"/manage/edit.svg"}
-                                  alt="edit icon"
-                                  width={24}
-                                  height={24}
-                                  priority={true}
-                                />
-                              </button>
-                              <button className="h-6 w-6">
-                                <Image
-                                  src={"/manage/delete.svg"}
-                                  alt="delete icon"
-                                  width={24}
-                                  height={24}
-                                  priority={true}
-                                />
-                              </button>
-                              <button className="h-6 w-6">
-                                <Image
-                                  src={"/manage/freeze.svg"}
-                                  alt="freeze icon"
-                                  width={24}
-                                  height={24}
-                                  priority={true}
-                                />
-                              </button>
-                            </div>
-                          </div>
-                          {/* info */}
-                          <div className="w-full h-11 flex flex-col justify-between">
-                            <span className="text-base leading-4 font-normal text-dark-gray">
-                              {user.admin ? "Admin" : null}
-                            </span>
-                            <span className="text-base leading-4 font-normal text-dark-gray">
-                              {user.email}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
+            <ManagePageTable
+              key={i}
+              usersFosterData={usersFosterData[foster]}
+              showListView={showListView}
+              setCurrentFosterId={setCurrentFosterId}
+              setCurrentFosterName={setCurrentFosterName}
+              showHomeControls={true}
+              showEditHomeModal={showEditHomeModal}
+              setShowEditHomeModal={setShowEditHomeModal}
+              showDeleteHomeModal={showDeleteHomeModal}
+              setShowDeleteHomeModal={setShowDeleteHomeModal}
+            />
           ))}
       </div>
     </div>
