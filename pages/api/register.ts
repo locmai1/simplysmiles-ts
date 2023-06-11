@@ -4,6 +4,7 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 
 const registerUserSchema = z.object({
+  name: z.string(),
   email: z
     .string()
     .regex(
@@ -26,9 +27,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
         });
 
-        if (user !== null) {
+        if (user) {
           res.status(400).json({
-            error: `use`,
+            error: `already existing user with email`,
           });
           return;
         }
@@ -37,19 +38,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const newUser = await prisma.user.create({
           data: {
+            name: userData.name,
             email: userData.email,
             password: hashedPassword,
           },
         });
 
-        if (newUser !== null) {
+        if (!newUser) {
           res.status(404).json({
             error: `unknown error when creating new user`,
           });
           return;
         }
 
-        res.status(200).json(newUser);
+        res.status(200).json({
+          ...newUser,
+          password: userData.password,
+        });
       } catch (error) {
         res.status(500).json({
           error: `failed to create new user: ${error}`,
