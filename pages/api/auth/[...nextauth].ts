@@ -1,13 +1,14 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import { z } from "zod";
 
 const prisma = new PrismaClient();
 
-const loginSchema = z.object({
+const loginUserSchema = z.object({
   email: z
     .string()
     .regex(
@@ -18,14 +19,6 @@ const loginSchema = z.object({
 });
 
 export const authOptions: NextAuthOptions = {
-  callbacks: {
-    session({ session, user }) {
-      if (session?.user) {
-        session.user.id = user.id;
-      }
-      return session;
-    },
-  },
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -39,13 +32,61 @@ export const authOptions: NextAuthOptions = {
         },
       },
     }),
-    // CredentialsProvider({
+    CredentialsProvider({
+      credentials: {
+        name: { type: "text", placeholder: "John Doe" },
+        email: { type: "text", placeholder: "example@domain.com" },
+        password: {
+          type: "password",
+          placeholder: "Must have at least 6 characters",
+        },
+      },
+      async authorize(credentials) {
+        const user = loginUserSchema.parse(credentials);
 
-    // })
+        const existingUser = await prisma.user.findUnique({
+          where: {
+            email: user.email,
+          },
+        });
+        if (!existingUser) {
+          return null;
+        }
+
+        const validPassword = await bcrypt.compare(
+          user.password,
+          existingUser.password
+        );
+        if (!validPassword) {
+          return null;
+        }
+
+        return existingUser;
+      },
+    }),
   ],
+  callbacks: {
+    session({ session, token }) {
+      session.user.id = token.id;
+      session.user.email = token.email;
+      return session;
+    },
+    jwt({ token, account, user }) {
+      if (account) {
+        token.accessToken = account.access_token;
+        token.id = user.id;
+        token.email = (user as User).email;
+      }
+      return token;
+    },
+  },
   pages: {
     signIn: "/login",
   },
+  session: {
+    strategy: "jwt",
+  },
+  secret: process.env.JWT_SECRET,
 };
 
 export default NextAuth(authOptions);
