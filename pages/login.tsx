@@ -77,7 +77,7 @@ const Login = () => {
           onSubmit={handleSubmit}
         >
           {error && (
-            <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mb-3">
+            <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2">
               <Image
                 src="/manage/warning.svg"
                 width={16}
