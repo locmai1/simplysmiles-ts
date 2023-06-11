@@ -2,6 +2,8 @@ import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { Montserrat } from "next/font/google";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 type UserProps = {
   email: string;
@@ -18,6 +20,13 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [error, setError] = useState<boolean>(false);
+  const { data: session } = useSession({ required: true });
+  const router = useRouter();
+
+  if (session) {
+    router.push("/");
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserData({
@@ -32,10 +41,15 @@ const Login = () => {
     const res = await signIn("credentials", {
       email: userData.email,
       password: userData.password,
-      callbackUrl: "/",
+      redirect: false,
     });
 
-    console.log(res);
+    if (res.status === 401) {
+      setError(true);
+    } else if (res.status === 200) {
+      setError(false);
+      router.push("/");
+    }
   };
 
   return (
@@ -66,6 +80,20 @@ const Login = () => {
           className="w-[400px] h-72 mt-9 flex flex-col justify-between"
           onSubmit={handleSubmit}
         >
+          {error && (
+            <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mb-3">
+              <Image
+                src="/manage/warning.svg"
+                width={16}
+                height={16}
+                alt="warning"
+                priority={true}
+              />
+              <span className="text-dark-red font-semibold text-xs">
+                Incorrect email or password
+              </span>
+            </div>
+          )}
           {/* username */}
           <div className="w-full h-[232px] flex flex-col justify-between">
             <div className="w-full h-[68px] flex flex-col justify-between">
