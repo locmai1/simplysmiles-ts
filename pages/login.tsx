@@ -26,6 +26,18 @@ const Login = () => {
     });
   };
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const res = await signIn("credentials", {
+      email: userData.email,
+      password: userData.password,
+      callbackUrl: "/",
+    });
+
+    console.log(res);
+  };
+
   return (
     <div
       className={`min-w-screen min-h-screen flex flex-row bg-secondary-default ${montserrat.className}`}
@@ -50,7 +62,10 @@ const Login = () => {
             priority={true}
           />
         </div>
-        <div className="w-[400px] h-72 mt-9 flex flex-col justify-between">
+        <form
+          className="w-[400px] h-72 mt-9 flex flex-col justify-between"
+          onSubmit={handleSubmit}
+        >
           {/* username */}
           <div className="w-full h-[232px] flex flex-col justify-between">
             <div className="w-full h-[68px] flex flex-col justify-between">
@@ -99,12 +114,13 @@ const Login = () => {
 
             <button
               className="w-full h-12 rounded-lg text-secondary-default bg-primary-default font-bold active:scale-95 active:shadow-lg transition-all"
+              type="submit"
               // onClick={() => signIn("google", { callbackUrl: "/" })}
             >
               Login
             </button>
           </div>
-        </div>
+        </form>
 
         {/* <button
           className="w-96 h-12 mt-8 rounded-lg text-secondary-default bg-primary-default font-bold active:scale-95 active:shadow-lg transition-all"
