@@ -3,9 +3,10 @@ import { signIn } from "next-auth/react";
 import { Montserrat } from "next/font/google";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
+import type { GetServerSidePropsContext } from "next";
 
-type UserProps = {
+type UserLoginProps = {
   email: string;
   password: string;
 };
@@ -16,17 +17,12 @@ const montserrat = Montserrat({
 });
 
 const Login = () => {
-  const [userData, setUserData] = useState<UserProps>({
+  const [userData, setUserData] = useState<UserLoginProps>({
     email: "",
     password: "",
   });
   const [error, setError] = useState<boolean>(false);
-  const { data: session } = useSession({ required: true });
   const router = useRouter();
-
-  if (session) {
-    router.push("/");
-  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserData({
@@ -162,3 +158,22 @@ const Login = () => {
 };
 
 export default Login;
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const session = await getSession(context);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
