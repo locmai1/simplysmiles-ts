@@ -17,17 +17,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET":
       try {
-        const homes = await prisma.foster.findMany();
+        const { isAdmin } = (await prisma.user.findUnique({
+          where: {
+            id: userId,
+          },
+          select: {
+            isAdmin: true,
+          },
+        })) ?? { isAdmin: false };
 
-        if (!homes) {
-          res.status(404).json({
-            error: `user ${userId} has no associated foster homes`,
+        if (isAdmin) {
+          const homes = await prisma.foster.findMany();
+
+          if (!homes) {
+            res.status(404).json({
+              error: `user ${userId} has no associated foster homes`,
+            });
+            return;
+          }
+
+          res.status(200).json(homes);
+          return;
+        } else {
+          res.status(500).json({
+            error: "in order to access this route, please sign in as admin",
           });
           return;
         }
-
-        res.status(200).json(homes);
-        return;
       } catch (error) {
         res.status(500).json({
           error: `failed to fetch fosters: ${error}`,
