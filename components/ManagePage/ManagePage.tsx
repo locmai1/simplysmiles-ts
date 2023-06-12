@@ -1,11 +1,14 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Image from "next/image";
-import AddHomeModal from "./AddHomeModal";
-import AddHomeConfirmModal from "./AddHomeConfirmModal";
-import EditHomeModal from "./EditHomeModal";
-import EditHomeConfirmModal from "./EditHomeConfirmModal";
-import DeleteHomeModal from "./DeleteHomeModal";
-import DeleteHomeConfirmModal from "./DeleteHomeConfirmModal";
+
+import AddHomeModal from "../AddHomeModal";
+import AddHomeConfirmModal from "../AddHomeConfirmModal";
+import EditHomeModal from "../EditHomeModal";
+import EditHomeConfirmModal from "../EditHomeConfirmModal";
+import DeleteHomeModal from "../DeleteHomeModal";
+import DeleteHomeConfirmModal from "../DeleteHomeConfirmModal";
+
+import ManagePageHeader from "./ManagePageHeader";
 import ManagePageTable from "./ManagePageTable";
 
 const ManagePage = () => {
@@ -25,11 +28,14 @@ const ManagePage = () => {
     useState<boolean>(false);
   const [showDeleteHomeConfirmModal, setShowDeleteHomeConfirmModal] =
     useState<boolean>(false);
-  // const [showAddParentModal, setShowAddParentModal] = useState<boolean>(false);
-  // const [showAddParentConfirmModal, setShowAddParentConfirmModal] =
-  //   useState<boolean>(false);
+  const [showAddParentModal, setShowAddParentModal] = useState<boolean>(false);
+  const [showAddParentConfirmModal, setShowAddParentConfirmModal] =
+    useState<boolean>(false);
 
-  // TODO: figure out credentialsprovider for nextauth
+  // TODO: addparentmodal, addparentconfirmmodal
+  // TODO: API route to get individual user information
+  // TODO: dropdown component for foster homes in addparentmodal
+  // TODO: search functionality
   const fetchUsersFosterData = async () => {
     try {
       const response = await fetch("/api/fosters/parents");
@@ -121,38 +127,10 @@ const ManagePage = () => {
       ) : null}
 
       {/* header */}
-      <div className="w-full flex flex-row justify-between h-10">
-        <span className="text-4xl font-bold text-dark-gray">
-          Manage accounts
-        </span>
-        <div className="flex flex-row h-10 w-96 justify-between">
-          <button className="h-full rounded-lg border-[1px] border-dark-gray flex flex-row justify-center items-center gap-3 w-[180px] bg-secondary-default">
-            <Image
-              src={"/manage/addparent.svg"}
-              alt="add parent"
-              width={24}
-              height={24}
-              priority={true}
-            />
-            <span className="text-dark-gray text-base font-bold">
-              Add parent
-            </span>
-          </button>
-          <button
-            className="h-full rounded-lg border-[1px] border-dark-gray flex flex-row justify-center items-center gap-3 w-[180px] bg-secondary-default"
-            onClick={() => setShowAddHomeModal(!showAddHomeModal)}
-          >
-            <Image
-              src={"/manage/addhome.svg"}
-              alt="add home"
-              width={24}
-              height={24}
-              priority={true}
-            />
-            <span className="text-dark-gray text-base font-bold">Add home</span>
-          </button>
-        </div>
-      </div>
+      <ManagePageHeader
+        setShowAddHomeModal={setShowAddHomeModal}
+        setShowAddParentModal={setShowAddParentModal}
+      />
 
       {/* search & sort */}
       <div className="w-full h-10 mt-[52px] flex flex-row justify-between">

@@ -1,6 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Image from "next/image";
-import ManagePage from "./ManagePage";
+import ManagePage from "./ManagePage/ManagePage";
 
 type SidebarProps = {
   currPage: React.ReactNode;
