@@ -1,12 +1,12 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 
-import AddHomeModal from "../AddHomeModal";
-import AddHomeConfirmModal from "../AddHomeConfirmModal";
-import EditHomeModal from "../EditHomeModal";
-import EditHomeConfirmModal from "../EditHomeConfirmModal";
-import DeleteHomeModal from "../DeleteHomeModal";
-import DeleteHomeConfirmModal from "../DeleteHomeConfirmModal";
+import AddHomeModal from "../Modals/AddHomeModal";
+import AddHomeConfirmModal from "../Modals/AddHomeConfirmModal";
+import EditHomeModal from "../Modals/EditHomeModal";
+import EditHomeConfirmModal from "../Modals/EditHomeConfirmModal";
+import DeleteHomeModal from "../Modals/DeleteHomeModal";
+import DeleteHomeConfirmModal from "../Modals/DeleteHomeConfirmModal";
 
 import ManagePageHeader from "./ManagePageHeader";
 import ManagePageTable from "./ManagePageTable";
