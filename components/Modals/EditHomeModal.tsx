@@ -90,21 +90,18 @@ const EditHomeModal = ({
   };
 
   // TODO: re-evaluate null values in onSubmit
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // type number
-    if (+event.target.value >= 0) {
-      setFosterHomeData({
-        ...fosterHomeData,
-        [event.target.name]: +event.target.value,
-      });
-    }
-    // type string
-    else {
-      setFosterHomeData({
-        ...fosterHomeData,
-        [event.target.name]: event.target.value,
-      });
-    }
+  const handleNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFosterHomeData({
+      ...fosterHomeData,
+      [event.target.name]: +event.target.value,
+    });
+  };
+
+  const handleStringChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFosterHomeData({
+      ...fosterHomeData,
+      [event.target.name]: event.target.value,
+    });
   };
 
   const handleCancel = () => {
@@ -166,7 +163,7 @@ const EditHomeModal = ({
                   name="fosterName"
                   type="text"
                   value={fosterHomeData.fosterName}
-                  onChange={handleChange}
+                  onChange={handleStringChange}
                   required
                 />
               </div>
@@ -214,7 +211,7 @@ const EditHomeModal = ({
                           type="number"
                           placeholder="$"
                           value={fosterHomeData.celebrationBudget}
-                          onChange={handleChange}
+                          onChange={handleNumberChange}
                           required
                         />
                       </div>
@@ -238,7 +235,7 @@ const EditHomeModal = ({
                           type="number"
                           placeholder="$"
                           value={fosterHomeData.managementBudget}
-                          onChange={handleChange}
+                          onChange={handleNumberChange}
                           required
                         />
                       </div>
@@ -262,7 +259,7 @@ const EditHomeModal = ({
                           type="number"
                           placeholder="$"
                           value={fosterHomeData.overnightBudget}
-                          onChange={handleChange}
+                          onChange={handleNumberChange}
                           required
                         />
                       </div>
@@ -289,7 +286,7 @@ const EditHomeModal = ({
                           type="number"
                           placeholder="$"
                           value={fosterHomeData.clothesBudget}
-                          onChange={handleChange}
+                          onChange={handleNumberChange}
                           required
                         />
                       </div>
@@ -313,7 +310,7 @@ const EditHomeModal = ({
                           type="number"
                           placeholder="$"
                           value={fosterHomeData.educationBudget}
-                          onChange={handleChange}
+                          onChange={handleNumberChange}
                           required
                         />
                       </div>
@@ -337,7 +334,7 @@ const EditHomeModal = ({
                           type="number"
                           placeholder="$"
                           value={fosterHomeData.recreationBudget}
-                          onChange={handleChange}
+                          onChange={handleNumberChange}
                           required
                         />
                       </div>
@@ -364,7 +361,7 @@ const EditHomeModal = ({
                           type="number"
                           placeholder="$"
                           value={fosterHomeData.culturalBudget}
-                          onChange={handleChange}
+                          onChange={handleNumberChange}
                           required
                         />
                       </div>
@@ -388,7 +385,7 @@ const EditHomeModal = ({
                           type="number"
                           placeholder="$"
                           value={fosterHomeData.householdBudget}
-                          onChange={handleChange}
+                          onChange={handleNumberChange}
                           required
                         />
                       </div>
@@ -412,7 +409,7 @@ const EditHomeModal = ({
                           type="number"
                           placeholder="$"
                           value={fosterHomeData.vehicleBudget}
-                          onChange={handleChange}
+                          onChange={handleNumberChange}
                           required
                         />
                       </div>
