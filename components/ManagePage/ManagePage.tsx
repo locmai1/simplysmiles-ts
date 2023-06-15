@@ -8,6 +8,7 @@ import EditHomeConfirmModal from "../Modals/EditHomeConfirmModal";
 import DeleteHomeModal from "../Modals/DeleteHomeModal";
 import DeleteHomeConfirmModal from "../Modals/DeleteHomeConfirmModal";
 import AddParentModal from "../Modals/AddParentModal";
+import AddParentConfirmModal from "../Modals/AddParentConfirmModal";
 
 import ManagePageHeader from "./ManagePageHeader";
 import ManagePageTable from "./ManagePageTable";
@@ -18,6 +19,7 @@ const ManagePage = () => {
   const [usersNoFosterData, setUsersNoFosterData] = useState<any>(null);
   const [usersFosterData, setUsersFosterData] = useState<any>(null);
   const [showListView, setShowListView] = useState<boolean>(true);
+  const [adminError, setAdminError] = useState<boolean>(false);
 
   const [showAddHomeModal, setShowAddHomeModal] = useState<boolean>(false);
   const [showAddHomeConfirmModal, setShowAddHomeConfirmModal] =
@@ -33,16 +35,17 @@ const ManagePage = () => {
   const [showAddParentConfirmModal, setShowAddParentConfirmModal] =
     useState<boolean>(false);
 
-  // TODO: addparentconfirmmodal
   // TODO: API route to get individual user information
   // TODO: search functionality
   const fetchUsersFosterData = async () => {
     try {
-      const response = await fetch("/api/fosters/parents");
-      if (response.status === 200) {
-        const data = await response.json();
+      const res = await fetch("/api/fosters/parents");
+      if (res.status === 200) {
+        const data = await res.json();
+        setAdminError(false);
         setUsersFosterData(data);
       } else {
+        setAdminError(true);
         setUsersFosterData(null);
       }
     } catch (error) {
@@ -52,11 +55,13 @@ const ManagePage = () => {
 
   const fetchUsersNoFosterData = async () => {
     try {
-      const response = await fetch("/api/fosters/users");
-      if (response.status === 200) {
-        const data = await response.json();
+      const res = await fetch("/api/fosters/users");
+      if (res.status === 200) {
+        const data = await res.json();
+        setAdminError(false);
         setUsersNoFosterData(data);
       } else {
+        setAdminError(true);
         setUsersNoFosterData(null);
       }
     } catch (error) {
@@ -133,67 +138,41 @@ const ManagePage = () => {
           setShowAddParentConfirmModal={setShowAddParentConfirmModal}
         />
       ) : null}
+      {!showAddParentModal && showAddParentConfirmModal ? (
+        <AddParentConfirmModal
+          showAddParentModal={showAddParentModal}
+          setShowAddParentModal={setShowAddParentModal}
+          showAddParentConfirmModal={showAddParentConfirmModal}
+          setShowAddParentConfirmModal={setShowAddParentConfirmModal}
+        />
+      ) : null}
 
       {/* header */}
       <ManagePageHeader
+        adminError={adminError}
+        showListView={showListView}
+        setShowListView={setShowListView}
         setShowAddHomeModal={setShowAddHomeModal}
         setShowAddParentModal={setShowAddParentModal}
       />
 
-      {/* search & sort */}
-      <div className="w-full h-10 mt-[52px] flex flex-row justify-between">
-        {/* search bar */}
-        <div className="relative w-[495px] h-10 flex flex-row items-center z-0">
-          <Image
-            className="absolute ml-6"
-            src={"/manage/search.svg"}
-            alt="magnifying glass"
-            width={24}
-            height={24}
-            priority={true}
-          />
-          <input
-            type="text"
-            className="border-[1px] rounded-[50px] px-14 border-light-gray text-dark-gray w-full h-full"
-            placeholder="Search"
-          />
-        </div>
-
-        {/* view control */}
-        <div className="flex flex-row h-full w-[88px] justify-between">
-          <button
-            className="h-full w-10 rounded-lg"
-            style={{ background: showListView ? "#C5C5C5" : "#12368E" }}
-            onClick={() => setShowListView(false)}
-          >
-            <Image
-              className="flex m-auto"
-              src={"/manage/gridview.svg"}
-              alt="grid view"
-              width={24}
-              height={24}
-              priority={true}
-            />
-          </button>
-          <button
-            className="h-full w-10 rounded-lg"
-            style={{ background: showListView ? "#12368E" : "#C5C5C5" }}
-            onClick={() => setShowListView(true)}
-          >
-            <Image
-              className="flex m-auto"
-              src={"/manage/listview.svg"}
-              alt="grid view"
-              width={24}
-              height={24}
-              priority={true}
-            />
-          </button>
-        </div>
-      </div>
-
       {/* user information */}
-      <div className="w-full flex flex-col overflow-y-auto mt-12">
+      <div className="w-full flex flex-col overflow-y-auto mt-5">
+        {adminError && (
+          <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2">
+            <Image
+              src="/manage/warning.svg"
+              width={16}
+              height={16}
+              alt="warning"
+              // priority={true}
+            />
+            <span className="text-dark-red font-semibold text-xs">
+              You need to be an admin to access this information
+            </span>
+          </div>
+        )}
+
         {usersNoFosterData && (
           <ManagePageTable
             usersFosterData={usersNoFosterData}
