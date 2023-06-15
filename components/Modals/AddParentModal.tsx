@@ -128,17 +128,9 @@ const AddParentModal = ({
               className="w-full h-[548px] flex flex-col mt-10"
               onSubmit={handleSubmit}
             >
-              <div className="w-full flex flex-col h-28">
-                <div className="h-4 flex flex-row">
-                  <span className="text-base font-bold text-dark-gray leading-4">
-                    Name
-                  </span>
-                  <span className="text-base font-bold text-light-red leading-4">
-                    &nbsp;*
-                  </span>
-                </div>
+              <div className="w-full flex flex-col">
                 {adminError && (
-                  <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mt-3">
+                  <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mb-3">
                     <Image
                       src="/manage/warning.svg"
                       width={16}
@@ -151,6 +143,14 @@ const AddParentModal = ({
                     </span>
                   </div>
                 )}
+                <div className="h-4 flex flex-row">
+                  <span className="text-base font-bold text-dark-gray leading-4">
+                    Name
+                  </span>
+                  <span className="text-base font-bold text-light-red leading-4">
+                    &nbsp;*
+                  </span>
+                </div>
                 <input
                   className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
                   name="name"
