@@ -33,9 +33,8 @@ const ManagePage = () => {
   const [showAddParentConfirmModal, setShowAddParentConfirmModal] =
     useState<boolean>(false);
 
-  // TODO: addparentmodal, addparentconfirmmodal
+  // TODO: addparentconfirmmodal
   // TODO: API route to get individual user information
-  // TODO: dropdown component for foster homes in addparentmodal
   // TODO: search functionality
   const fetchUsersFosterData = async () => {
     try {

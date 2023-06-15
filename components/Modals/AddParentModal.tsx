@@ -1,5 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import FilterDropdown from "../FilterDropdown";
+import Image from "next/image";
 
 type AddParentModalProps = {
   showAddParentModal: boolean;
@@ -30,31 +31,26 @@ const AddParentModal = ({
     fosterName: "",
   });
   const [fosterOptions, setFosterOptions] = useState<string[]>([]);
+  const [emailError, setEmailError] = useState<boolean>(false);
+  const [passwordError, setPasswordError] = useState<boolean>(false);
+  const [adminError, setAdminError] = useState<boolean>(false);
+
+  const fetchFostersData = async () => {
+    try {
+      const res = await fetch(`/api/fosters`);
+      const data = await res.json();
+      if (data) {
+        const fosterNames = Object.keys(data).map(
+          (foster, i: number) => data[foster].name
+        );
+        setFosterOptions(fosterNames);
+      }
+    } catch (error) {
+      console.log(`failed to fetch foster data: ${error}`);
+    }
+  };
 
   useEffect(() => {
-    const fetchFostersData = async () => {
-      try {
-        const res = await fetch(`/api/fosters`);
-        const data = await res.json();
-        if (data) {
-          // setFosterOptions(
-          //   Object.keys(data).map((foster, i: number) => (
-          //     <option key={i} value={data[foster].name} className="">
-          //       {data[foster].name}
-          //     </option>
-          //   ))
-          // );
-          const fosterNames = Object.keys(data).map(
-            (foster, i: number) => data[foster].name
-          );
-          setFosterOptions(fosterNames);
-
-          // console.log(fosterOptions);
-        }
-      } catch (error) {
-        console.log(`failed to fetch foster data: ${error}`);
-      }
-    };
     fetchFostersData();
   }, []);
 
@@ -65,34 +61,56 @@ const AddParentModal = ({
     });
   };
 
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setParentData({
-      ...parentData,
-      [event.target.name]: event.target.value,
-    });
+  const handleCancel = () => {
+    setShowAddParentModal(false);
   };
 
-  const handleCancel = () => {
-    setShowAddParentModal(!showAddParentModal);
-    console.log(fosterOptions);
+  const handleConfirm = () => {
+    setPasswordError(false);
+    setAdminError(false);
+    setEmailError(false);
+    setShowAddParentModal(false);
+    setShowAddParentConfirmModal(true);
   };
 
   const validatePassword = () => {
     if (parentData.password == parentData.passwordConfirm) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (validatePassword()) {
-      // api call
-      console.log("matched password", parentData);
+      const res = await fetch("/api/users/add", {
+        method: "POST",
+        body: JSON.stringify({
+          name: parentData.name,
+          email: parentData.email,
+          password: parentData.password,
+          fosterName: parentData.fosterName,
+        }),
+      });
+      const data = await res.json();
+      console.log(data);
+
+      if (res.status === 200) {
+        handleConfirm();
+      } else if (res.status === 400) {
+        setPasswordError(false);
+        setAdminError(false);
+        setEmailError(true);
+      } else if (res.status === 500) {
+        setPasswordError(false);
+        setAdminError(true);
+        setEmailError(false);
+      }
     } else {
-      console.log("unmatched password", parentData);
+      setPasswordError(true);
+      setAdminError(false);
+      setEmailError(false);
     }
   };
 
@@ -106,7 +124,7 @@ const AddParentModal = ({
             </span>
 
             <form
-              className="w-full h-[548px] flex flex-col mt-9"
+              className="w-full h-[548px] flex flex-col mt-10"
               onSubmit={handleSubmit}
             >
               <div className="w-full flex flex-col h-28">
@@ -118,6 +136,20 @@ const AddParentModal = ({
                     &nbsp;*
                   </span>
                 </div>
+                {adminError && (
+                  <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mt-3">
+                    <Image
+                      src="/manage/warning.svg"
+                      width={16}
+                      height={16}
+                      alt="warning"
+                      priority={true}
+                    />
+                    <span className="text-dark-red font-semibold text-xs">
+                      You need to be an admin to add parents
+                    </span>
+                  </div>
+                )}
                 <input
                   className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
                   name="name"
@@ -128,7 +160,7 @@ const AddParentModal = ({
                 />
               </div>
 
-              <div className="w-full flex flex-col h-28 mt-7">
+              <div className="w-full flex flex-col mt-5">
                 <div className="h-4 flex flex-row">
                   <span className="text-base font-bold text-dark-gray leading-4">
                     Home
@@ -160,7 +192,7 @@ const AddParentModal = ({
                 )}
               </div>
 
-              <div className="w-full flex flex-col h-28 mt-7">
+              <div className="w-full flex flex-col mt-5">
                 <div className="h-4 flex flex-row">
                   <span className="text-base font-bold text-dark-gray leading-4">
                     Email
@@ -169,6 +201,20 @@ const AddParentModal = ({
                     &nbsp;*
                   </span>
                 </div>
+                {emailError && (
+                  <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mt-3">
+                    <Image
+                      src="/manage/warning.svg"
+                      width={16}
+                      height={16}
+                      alt="warning"
+                      priority={true}
+                    />
+                    <span className="text-dark-red font-semibold text-xs">
+                      There is an existing user under that email
+                    </span>
+                  </div>
+                )}
                 <input
                   className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
                   name="email"
@@ -179,7 +225,7 @@ const AddParentModal = ({
                 />
               </div>
 
-              <div className="w-full flex flex-col h-28 mt-7">
+              <div className="w-full flex flex-col mt-5">
                 <div className="h-4 flex flex-row">
                   <span className="text-base font-bold text-dark-gray leading-4">
                     Password
@@ -188,6 +234,20 @@ const AddParentModal = ({
                     &nbsp;*
                   </span>
                 </div>
+                {passwordError && (
+                  <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mt-3">
+                    <Image
+                      src="/manage/warning.svg"
+                      width={16}
+                      height={16}
+                      alt="warning"
+                      priority={true}
+                    />
+                    <span className="text-dark-red font-semibold text-xs">
+                      Passwords do not match
+                    </span>
+                  </div>
+                )}
                 <input
                   className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
                   name="password"
@@ -198,7 +258,7 @@ const AddParentModal = ({
                 />
               </div>
 
-              <div className="w-full flex flex-col h-28 mt-7">
+              <div className="w-full flex flex-col mt-5">
                 <div className="h-4 flex flex-row">
                   <span className="text-base font-bold text-dark-gray leading-4">
                     Confirm Password
