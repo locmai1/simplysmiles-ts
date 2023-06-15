@@ -63,6 +63,7 @@ const AddParentModal = ({
 
   const handleCancel = () => {
     setShowAddParentModal(false);
+    setShowAddParentConfirmModal(false);
   };
 
   const handleConfirm = () => {
