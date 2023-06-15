@@ -7,6 +7,7 @@ import EditHomeModal from "../Modals/EditHomeModal";
 import EditHomeConfirmModal from "../Modals/EditHomeConfirmModal";
 import DeleteHomeModal from "../Modals/DeleteHomeModal";
 import DeleteHomeConfirmModal from "../Modals/DeleteHomeConfirmModal";
+import AddParentModal from "../Modals/AddParentModal";
 
 import ManagePageHeader from "./ManagePageHeader";
 import ManagePageTable from "./ManagePageTable";
@@ -123,6 +124,14 @@ const ManagePage = () => {
           setShowDeleteHomeModal={setShowDeleteHomeModal}
           showDeleteHomeConfirmModal={showDeleteHomeConfirmModal}
           setShowDeleteHomeConfirmModal={setShowDeleteHomeConfirmModal}
+        />
+      ) : null}
+      {showAddParentModal && !showAddParentConfirmModal ? (
+        <AddParentModal
+          showAddParentModal={showAddParentModal}
+          setShowAddParentModal={setShowAddParentModal}
+          showAddParentConfirmModal={showAddParentConfirmModal}
+          setShowAddParentConfirmModal={setShowAddParentConfirmModal}
         />
       ) : null}
 
