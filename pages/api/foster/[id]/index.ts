@@ -14,50 +14,68 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const fosterId = z.string().parse(req.query.id);
+  const userId = session.user.id;
 
   switch (req.method) {
     case "GET":
       try {
-        const foster = await prisma.foster.findUnique({
+        const { isAdmin } = (await prisma.user.findUnique({
           where: {
-            id: fosterId,
+            id: userId,
           },
-        });
+          select: {
+            isAdmin: true,
+          },
+        })) ?? { isAdmin: false };
 
-        if (!foster) {
-          res.status(404).json({
-            error: `cannot find foster with id ${fosterId}`,
+        if (isAdmin) {
+          const foster = await prisma.foster.findUnique({
+            where: {
+              id: fosterId,
+            },
+          });
+
+          if (!foster) {
+            res.status(404).json({
+              error: `cannot find foster with id ${fosterId}`,
+            });
+            return;
+          }
+
+          const budget = await prisma.budget.findUnique({
+            where: {
+              id: foster.budgetId,
+            },
+          });
+
+          if (!budget) {
+            res.status(404).json({
+              error: `cannot find foster with id ${foster.budgetId}`,
+            });
+            return;
+          }
+
+          const fosterWithBudgetData = {
+            fosterName: foster.name,
+            celebrationBudget: budget.celebration,
+            clothesBudget: budget.clothes,
+            culturalBudget: budget.culturalDev,
+            managementBudget: budget.management,
+            educationBudget: budget.education,
+            householdBudget: budget.household,
+            overnightBudget: budget.overnightTravel,
+            recreationBudget: budget.recreational,
+            vehicleBudget: budget.vehicle,
+          };
+
+          res.status(200).json(fosterWithBudgetData);
+          return;
+        } else {
+          res.status(500).json({
+            error: "in order to access this route, please sign in as admin",
           });
           return;
         }
-
-        const budget = await prisma.budget.findUnique({
-          where: {
-            id: foster.budgetId,
-          },
-        });
-
-        if (!budget) {
-          res.status(404).json({
-            error: `cannot find foster with id ${foster.budgetId}`,
-          });
-          return;
-        }
-
-        const fosterWithBudgetData = {
-          fosterName: foster.name,
-          celebrationBudget: budget.celebration,
-          clothesBudget: budget.clothes,
-          culturalBudget: budget.culturalDev,
-          managementBudget: budget.management,
-          educationBudget: budget.education,
-          householdBudget: budget.household,
-          overnightBudget: budget.overnightTravel,
-          recreationBudget: budget.recreational,
-          vehicleBudget: budget.vehicle,
-        };
-
-        res.status(200).json(fosterWithBudgetData);
       } catch (error) {
         res.status(404).json({
           error: `failed to fetch foster: ${error}`,
