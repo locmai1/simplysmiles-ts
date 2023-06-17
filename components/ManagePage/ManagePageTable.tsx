@@ -170,7 +170,7 @@ const ManagePageTable = ({
           className="w-full mt-6 mb-12 grid grid-cols-3 gap-6"
           style={{
             height: Math.ceil(usersFosterData.users.length / 3) * 128,
-            gridTemplateRows: Math.ceil(usersFosterData.users.length / 3),
+            // gridTemplateRows: Math.ceil(usersFosterData.users.length / 3),
           }}
         >
           {usersFosterData.users.map((user, i: number) => {

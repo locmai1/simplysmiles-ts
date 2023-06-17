@@ -37,7 +37,7 @@ const ManagePage = () => {
 
   // TODO: search functionality (might remove entirely)
   // TODO: API route to get individual user information (admin)
-  // TODO: API route to edit individual user information (admin)
+  // TODO: API route to edit individual user information (admin) -> add admin control
   // TODO: API route to freeze individual user (admin)
   // TODO: edit button functionality
   const fetchUsersFosterData = async () => {
