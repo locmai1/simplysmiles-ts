@@ -35,8 +35,11 @@ const ManagePage = () => {
   const [showAddParentConfirmModal, setShowAddParentConfirmModal] =
     useState<boolean>(false);
 
-  // TODO: API route to get individual user information
-  // TODO: search functionality
+  // TODO: search functionality (might remove entirely)
+  // TODO: API route to get individual user information (admin)
+  // TODO: API route to edit individual user information (admin)
+  // TODO: API route to freeze individual user (admin)
+  // TODO: edit button functionality
   const fetchUsersFosterData = async () => {
     try {
       const res = await fetch("/api/fosters/parents");
