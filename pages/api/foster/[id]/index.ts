@@ -28,20 +28,53 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           },
         })) ?? { isAdmin: false };
 
+        const foster = await prisma.foster.findUnique({
+          where: {
+            id: fosterId,
+          },
+          include: {
+            user: true,
+          },
+        });
+
+        if (!foster) {
+          res.status(404).json({
+            error: `cannot find foster with id ${fosterId}`,
+          });
+          return;
+        }
+
         if (isAdmin) {
-          const foster = await prisma.foster.findUnique({
+          const budget = await prisma.budget.findUnique({
             where: {
-              id: fosterId,
+              id: foster.budgetId,
             },
           });
 
-          if (!foster) {
+          if (!budget) {
             res.status(404).json({
-              error: `cannot find foster with id ${fosterId}`,
+              error: `cannot find foster with id ${foster.budgetId}`,
             });
             return;
           }
 
+          const fosterWithBudgetData = {
+            fosterName: foster.name,
+            celebrationBudget: budget.celebration,
+            clothesBudget: budget.clothes,
+            culturalBudget: budget.culturalDev,
+            managementBudget: budget.management,
+            educationBudget: budget.education,
+            householdBudget: budget.household,
+            overnightBudget: budget.overnightTravel,
+            recreationBudget: budget.recreational,
+            vehicleBudget: budget.vehicle,
+          };
+
+          res.status(200).json(fosterWithBudgetData);
+          return;
+          // if the foster with [id] contains the userId of the session
+        } else if (foster.user.some((user) => user.id === userId)) {
           const budget = await prisma.budget.findUnique({
             where: {
               id: foster.budgetId,
