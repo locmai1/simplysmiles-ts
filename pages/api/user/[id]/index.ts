@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         const { isAdmin } = (await prisma.user.findUnique({
           where: {
-            id: userId,
+            id: session.user.id,
           },
           select: {
             isAdmin: true,
