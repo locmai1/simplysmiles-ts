@@ -39,6 +39,7 @@ const DeleteHomeConfirmModal = ({
               <button
                 className="h-full w-60 bg-primary-default rounded-lg flex justify-center items-center"
                 onClick={handleConfirm}
+                type="button"
               >
                 <span className="text-base leading-4 text-secondary-default font-bold">
                   Close

@@ -405,6 +405,7 @@ const AddHomeModal = ({
                   <button
                     className="h-full w-60 bg-secondary-default rounded-lg flex justify-center items-center border-[1px] border-primary-default"
                     onClick={handleCancel}
+                    type="button"
                   >
                     <span className="text-base leading-4 text-primary-default font-bold">
                       Cancel

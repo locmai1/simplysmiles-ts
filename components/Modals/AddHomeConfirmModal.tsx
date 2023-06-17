@@ -34,6 +34,7 @@ const AddHomeConfirmModal = ({
               <button
                 className="w-60 h-full bg-secondary-default rounded-lg flex justify-center items-center border-[1px] border-primary-default"
                 onClick={handleAnother}
+                type="button"
               >
                 <span className="text-base leading-4 text-primary-default font-bold">
                   Add another home
@@ -42,6 +43,7 @@ const AddHomeConfirmModal = ({
               <button
                 className="h-full w-60 bg-primary-default rounded-lg flex justify-center items-center"
                 onClick={handleReturn}
+                type="button"
               >
                 <span className="text-base leading-4 text-secondary-default font-bold">
                   Manage accounts

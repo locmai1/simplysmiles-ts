@@ -44,6 +44,7 @@ const DeleteHomeModal = ({
               <button
                 className="w-60 h-full bg-secondary-default rounded-lg flex justify-center items-center border-[1px] border-primary-default"
                 onClick={handleCancel}
+                type="button"
               >
                 <span className="text-base leading-4 text-primary-default font-bold">
                   Cancel
@@ -52,6 +53,7 @@ const DeleteHomeModal = ({
               <button
                 className="h-full w-60 bg-primary-default rounded-lg flex justify-center items-center"
                 onClick={handleConfirm}
+                type="button"
               >
                 <span className="text-base leading-4 text-secondary-default font-bold">
                   Confirm
