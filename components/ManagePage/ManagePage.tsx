@@ -9,6 +9,7 @@ import DeleteHomeModal from "../Modals/DeleteHomeModal";
 import DeleteHomeConfirmModal from "../Modals/DeleteHomeConfirmModal";
 import AddParentModal from "../Modals/AddParentModal";
 import AddParentConfirmModal from "../Modals/AddParentConfirmModal";
+import EditParentModal from "../Modals/EditParentModal";
 
 import ManagePageHeader from "./ManagePageHeader";
 import ManagePageTable from "./ManagePageTable";
@@ -16,6 +17,8 @@ import ManagePageTable from "./ManagePageTable";
 const ManagePage = () => {
   const [currentFosterId, setCurrentFosterId] = useState<string>("");
   const [currentFosterName, setCurrentFosterName] = useState<string>("");
+  const [currentParentId, setCurrentParentId] = useState<string>("");
+  const [currentParentName, setCurrentParentName] = useState<string>("");
   const [usersNoFosterData, setUsersNoFosterData] = useState<any>(null);
   const [usersFosterData, setUsersFosterData] = useState<any>(null);
   const [showListView, setShowListView] = useState<boolean>(true);
@@ -33,6 +36,10 @@ const ManagePage = () => {
     useState<boolean>(false);
   const [showAddParentModal, setShowAddParentModal] = useState<boolean>(false);
   const [showAddParentConfirmModal, setShowAddParentConfirmModal] =
+    useState<boolean>(false);
+  const [showEditParentModal, setShowEditParentModal] =
+    useState<boolean>(false);
+  const [showEditParentConfirmModal, setShowEditParentConfirmModal] =
     useState<boolean>(false);
 
   // TODO: search functionality (might remove entirely)
@@ -147,6 +154,16 @@ const ManagePage = () => {
           setShowAddParentModal={setShowAddParentModal}
           showAddParentConfirmModal={showAddParentConfirmModal}
           setShowAddParentConfirmModal={setShowAddParentConfirmModal}
+        />
+      ) : null}
+      {showAddParentModal && !showAddParentConfirmModal ? (
+        <EditParentModal
+          parentId={currentParentId}
+          setParentName={setCurrentParentName}
+          showEditParentModal={showEditParentModal}
+          setShowEditParentModal={setShowEditParentModal}
+          showEditParentConfirmModal={showEditParentConfirmModal}
+          setShowEditParentConfirmModal={setShowEditParentConfirmModal}
         />
       ) : null}
 
