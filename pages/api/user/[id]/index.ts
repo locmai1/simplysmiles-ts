@@ -43,7 +43,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             return;
           }
 
-          res.status(200).json(user);
+          let fosterName = "";
+
+          if (user.fosterId) {
+            const foster = await prisma.foster.findUnique({
+              where: {
+                id: user.fosterId,
+              },
+              select: {
+                name: true,
+              },
+            });
+            fosterName = foster.name;
+          }
+
+          res.status(200).json({
+            name: user.name,
+            email: user.email,
+            password: "",
+            fosterName: fosterName,
+          });
           return;
         } else if (userId == session.user.id) {
           const user = await prisma.user.findUnique({
@@ -59,7 +78,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             return;
           }
 
-          res.status(200).json(user);
+          let fosterName = "";
+
+          if (user.fosterId) {
+            const foster = await prisma.foster.findUnique({
+              where: {
+                id: user.fosterId,
+              },
+              select: {
+                name: true,
+              },
+            });
+            fosterName = foster.name;
+          }
+
+          res.status(200).json({
+            name: user.name,
+            email: user.email,
+            password: "",
+            fosterName: fosterName,
+          });
           return;
         } else {
           res.status(500).json({
