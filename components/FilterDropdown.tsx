@@ -48,14 +48,6 @@ export default function FilterDropdown({
     setFilterText(initialItem);
   }, [initialItem]);
 
-  const handleOnClick = () => {
-    if (!showOptions) {
-      return null;
-    } else {
-      setShowOptions(true);
-    }
-  };
-
   return (
     <div
       className="bg-red flex w-full flex-col mt-3 "
@@ -72,7 +64,7 @@ export default function FilterDropdown({
       {showOptions && (
         <div className="relative w-full">
           <div className="top-100 absolute z-50 flex max-h-[150px] w-full flex-col overflow-y-auto bg-white">
-            <span
+            {/* <span
               className="flex flex-row px-4 items-center text-dark-gray hover:cursor-pointer hover:bg-blue-500 hover:text-white h-10 border-[1px] border-light-gray"
               onClick={() => {
                 onItemSelect(0, "None");
@@ -80,9 +72,8 @@ export default function FilterDropdown({
                 setShowOptions(false);
               }}
             >
-              {/* {selectedItem.includes(item) && <Check />} */}
               None
-            </span>
+            </span> */}
             {filteredItems.map((item: string, index: number) => (
               <span
                 className="flex flex-row px-4 items-center text-dark-gray hover:cursor-pointer hover:bg-blue-500 hover:text-white h-10 border-[1px] border-light-gray"
