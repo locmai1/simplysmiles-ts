@@ -43,10 +43,10 @@ const ManagePage = () => {
     useState<boolean>(false);
 
   // TODO: search functionality (might remove entirely)
-  // TODO: API route to get individual user information (admin)
-  // TODO: API route to edit individual user information (admin) -> add admin control
   // TODO: API route to freeze individual user (admin)
-  // TODO: edit button functionality
+  // TODO: hook up delete user route
+  // TOOD: clean up component props
+  // TODO: error types to all modals and api routes
   const fetchUsersFosterData = async () => {
     try {
       const res = await fetch("/api/fosters/parents");
@@ -197,16 +197,13 @@ const ManagePage = () => {
           <ManagePageTable
             usersFosterData={usersNoFosterData}
             showListView={showListView}
+            showHomeControls={false}
             setCurrentFosterId={setCurrentFosterId}
             setCurrentFosterName={setCurrentFosterName}
             setCurrentParentId={setCurrentParentId}
             setCurrentParentName={setCurrentParentName}
-            showHomeControls={false}
-            showEditHomeModal={showEditHomeModal}
             setShowEditHomeModal={setShowEditHomeModal}
-            showDeleteHomeModal={showDeleteHomeModal}
             setShowDeleteHomeModal={setShowDeleteHomeModal}
-            showEditParentModal={showEditParentModal}
             setShowEditParentModal={setShowEditParentModal}
           />
         )}
@@ -218,16 +215,13 @@ const ManagePage = () => {
               key={i}
               usersFosterData={usersFosterData[foster]}
               showListView={showListView}
+              showHomeControls={true}
               setCurrentFosterId={setCurrentFosterId}
               setCurrentFosterName={setCurrentFosterName}
               setCurrentParentId={setCurrentParentId}
               setCurrentParentName={setCurrentParentName}
-              showHomeControls={true}
-              showEditHomeModal={showEditHomeModal}
               setShowEditHomeModal={setShowEditHomeModal}
-              showDeleteHomeModal={showDeleteHomeModal}
               setShowDeleteHomeModal={setShowDeleteHomeModal}
-              showEditParentModal={showEditParentModal}
               setShowEditParentModal={setShowEditParentModal}
             />
           ))}

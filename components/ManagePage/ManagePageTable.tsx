@@ -4,34 +4,26 @@ import Image from "next/image";
 type ManagePageTableProps = {
   usersFosterData: any;
   showListView: boolean;
+  showHomeControls: boolean;
   setCurrentFosterId: Dispatch<SetStateAction<string>>;
   setCurrentFosterName: Dispatch<SetStateAction<string>>;
   setCurrentParentId: Dispatch<SetStateAction<string>>;
   setCurrentParentName: Dispatch<SetStateAction<string>>;
-  showHomeControls: boolean;
-  showEditHomeModal: boolean;
   setShowEditHomeModal: Dispatch<SetStateAction<boolean>>;
-  showDeleteHomeModal: boolean;
   setShowDeleteHomeModal: Dispatch<SetStateAction<boolean>>;
-  showEditParentModal: boolean;
   setShowEditParentModal: Dispatch<SetStateAction<boolean>>;
-  // showDeleteParentModal: boolean;
-  // setShowDeleteParentModal: Dispatch<SetStateAction<boolean>>;
 };
 
 const ManagePageTable = ({
   usersFosterData,
   showListView,
+  showHomeControls,
   setCurrentFosterId,
   setCurrentFosterName,
   setCurrentParentId,
   setCurrentParentName,
-  showHomeControls,
-  showEditHomeModal,
   setShowEditHomeModal,
-  showDeleteHomeModal,
   setShowDeleteHomeModal,
-  showEditParentModal,
   setShowEditParentModal,
 }: ManagePageTableProps) => {
   const handleEditHomeSelect = (id: string, name: string) => {
@@ -212,7 +204,12 @@ const ManagePageTable = ({
                       {user.name}
                     </span>
                     <div className="flex flex-row h-6 w-[90px] justify-between">
-                      <button className="h-6 w-6">
+                      <button
+                        className="h-6 w-6"
+                        onClick={() =>
+                          handleEditParentSelect(user.userId, user.name)
+                        }
+                      >
                         <Image
                           src={"/manage/edit.svg"}
                           alt="edit icon"
