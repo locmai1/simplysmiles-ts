@@ -42,6 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               .string()
               .min(6, "Password should be minimum 6 characters"),
             fosterName: z.string(),
+            isAdmin: z.boolean(),
           });
           const body = bodySchema.parse(JSON.parse(req.body));
           const hashedPassword = await bcrypt.hash(body.password, 10);
@@ -59,7 +60,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             return;
           }
 
-          if (body.fosterName != "None") {
+          if (body.fosterName != "None" && body.email != user.email) {
             const foster = await prisma.foster.findUnique({
               where: {
                 name: body.fosterName,
@@ -82,6 +83,72 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 email: body.email,
                 password: hashedPassword,
                 fosterId: foster.id,
+                isAdmin: body.isAdmin,
+              },
+            });
+
+            if (!updatedUser) {
+              res.status(404).json({
+                error: `failed to update user with id: ${userId}`,
+              });
+              return;
+            }
+
+            res.status(200).json({
+              ...updatedUser,
+              password: body.password,
+            });
+            return;
+          } else if (body.fosterName != "None" && body.email == user.email) {
+            const foster = await prisma.foster.findUnique({
+              where: {
+                name: body.fosterName,
+              },
+            });
+
+            if (!foster) {
+              res.status(404).json({
+                error: `failed to find foster with name: ${body.fosterName}`,
+              });
+              return;
+            }
+
+            const updatedUser = await prisma.user.update({
+              where: {
+                id: userId,
+              },
+              data: {
+                name: body.name,
+                // email: body.email,
+                password: hashedPassword,
+                fosterId: foster.id,
+                isAdmin: body.isAdmin,
+              },
+            });
+
+            if (!updatedUser) {
+              res.status(404).json({
+                error: `failed to update user with id: ${userId}`,
+              });
+              return;
+            }
+
+            res.status(200).json({
+              ...updatedUser,
+              password: body.password,
+            });
+            return;
+          } else if (body.fosterName == "None" && body.email != user.email) {
+            const updatedUser = await prisma.user.update({
+              where: {
+                id: userId,
+              },
+              data: {
+                name: body.name,
+                email: body.email,
+                password: hashedPassword,
+                fosterId: null,
+                isAdmin: body.isAdmin,
               },
             });
 
@@ -104,9 +171,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               },
               data: {
                 name: body.name,
-                email: body.email,
+                // email: body.email,
                 password: hashedPassword,
                 fosterId: null,
+                isAdmin: body.isAdmin,
               },
             });
 
@@ -115,6 +183,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 error: `failed to update user with id: ${userId}`,
               });
               return;
+            } else if (body.email != user.email) {
             }
 
             res.status(200).json({

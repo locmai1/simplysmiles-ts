@@ -62,6 +62,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             email: user.email,
             password: "",
             fosterName: fosterName,
+            isAdmin: user.isAdmin,
           });
           return;
         } else if (userId == session.user.id) {
@@ -97,6 +98,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             email: user.email,
             password: "",
             fosterName: fosterName,
+            isAdmin: user.isAdmin,
           });
           return;
         } else {
