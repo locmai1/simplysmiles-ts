@@ -73,7 +73,7 @@ const EditParentModal = ({
   useEffect(() => {
     fetchFostersData();
     fetchParentData();
-  }, []);
+  });
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setParentData({
