@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 // function Check(props: JSX.IntrinsicElements["svg"]) {
 //   return (
@@ -23,23 +23,31 @@ import { useMemo, useState } from "react";
 type FilterDropdownProps = {
   items: string[];
   // selectedItem: string;
+  initialItem: string;
   onItemSelect: (idx: number, item: string) => void;
 };
 
 export default function FilterDropdown({
   items,
   // selectedItem,
+  initialItem,
   onItemSelect,
 }: FilterDropdownProps) {
-  const [filterText, setFilterText] = useState("");
+  const [filterText, setFilterText] = useState<string>("");
   const filteredItems = useMemo(
     () => items.filter((tag) => tag.indexOf(filterText) != -1),
     [filterText, items]
   );
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterText(e.target.value);
-  };
   const [showOptions, setShowOptions] = useState(false);
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterText(event.target.value);
+  };
+
+  useEffect(() => {
+    setFilterText(initialItem);
+  }, [initialItem]);
+
   return (
     <div
       className="bg-red flex w-full flex-col mt-3 "

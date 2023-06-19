@@ -188,6 +188,7 @@ const AddParentModal = ({
                         fosterName: item,
                       });
                     }}
+                    initialItem={parentData.fosterName}
                     // selectedItem={parentData.fosterName}
                   />
                 )}
