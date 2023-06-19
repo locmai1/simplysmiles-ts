@@ -59,43 +59,70 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             return;
           }
 
-          const foster = await prisma.foster.findUnique({
-            where: {
-              name: body.fosterName,
-            },
-          });
+          if (body.fosterName != "None") {
+            const foster = await prisma.foster.findUnique({
+              where: {
+                name: body.fosterName,
+              },
+            });
 
-          if (!foster) {
-            res.status(404).json({
-              error: `failed to find foster with name: ${body.fosterName}`,
+            if (!foster) {
+              res.status(404).json({
+                error: `failed to find foster with name: ${body.fosterName}`,
+              });
+              return;
+            }
+
+            const updatedUser = await prisma.user.update({
+              where: {
+                id: userId,
+              },
+              data: {
+                name: body.name,
+                email: body.email,
+                password: hashedPassword,
+                fosterId: foster.id,
+              },
+            });
+
+            if (!updatedUser) {
+              res.status(404).json({
+                error: `failed to update user with id: ${userId}`,
+              });
+              return;
+            }
+
+            res.status(200).json({
+              ...updatedUser,
+              password: body.password,
+            });
+            return;
+          } else {
+            const updatedUser = await prisma.user.update({
+              where: {
+                id: userId,
+              },
+              data: {
+                name: body.name,
+                email: body.email,
+                password: hashedPassword,
+                fosterId: null,
+              },
+            });
+
+            if (!updatedUser) {
+              res.status(404).json({
+                error: `failed to update user with id: ${userId}`,
+              });
+              return;
+            }
+
+            res.status(200).json({
+              ...updatedUser,
+              password: body.password,
             });
             return;
           }
-
-          const updatedUser = await prisma.user.update({
-            where: {
-              id: userId,
-            },
-            data: {
-              name: body.name,
-              email: body.name,
-              password: hashedPassword,
-              fosterId: foster.id,
-            },
-          });
-
-          if (!updatedUser) {
-            res.status(404).json({
-              error: `failed to update user with id: ${userId}`,
-            });
-            return;
-          }
-
-          res.status(200).json({
-            ...updatedUser,
-            password: body.password,
-          });
-          return;
         } else {
           res.status(500).json({
             error: "in order to access this route, please sign in as admin",

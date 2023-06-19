@@ -60,37 +60,58 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
           const hashedPassword = await bcrypt.hash(body.password, 10);
 
-          const foster = await prisma.foster.findUnique({
-            where: {
-              name: body.fosterName,
-            },
-          });
-
-          if (!foster) {
-            res.status(404).json({
-              error: `failed to find foster with name: ${body.fosterName}`,
+          if (body.fosterName != "None") {
+            const foster = await prisma.foster.findUnique({
+              where: {
+                name: body.fosterName,
+              },
             });
+
+            if (!foster) {
+              res.status(404).json({
+                error: `failed to find foster with name: ${body.fosterName}`,
+              });
+              return;
+            }
+
+            const newUser = await prisma.user.create({
+              data: {
+                name: body.name,
+                email: body.email,
+                password: hashedPassword,
+                fosterId: foster.id,
+              },
+            });
+
+            if (!newUser) {
+              res.status(404).json({
+                error: `failed to create user with given information`,
+              });
+              return;
+            }
+
+            res.status(200).json(newUser);
+            return;
+          } else {
+            const newUser = await prisma.user.create({
+              data: {
+                name: body.name,
+                email: body.email,
+                password: hashedPassword,
+                fosterId: null,
+              },
+            });
+
+            if (!newUser) {
+              res.status(404).json({
+                error: `failed to create user with given information`,
+              });
+              return;
+            }
+
+            res.status(200).json(newUser);
             return;
           }
-
-          const newUser = await prisma.user.create({
-            data: {
-              name: body.name,
-              email: body.email,
-              password: hashedPassword,
-              fosterId: foster.id,
-            },
-          });
-
-          if (!newUser) {
-            res.status(404).json({
-              error: `failed to create user with given information`,
-            });
-            return;
-          }
-
-          res.status(200).json(newUser);
-          return;
         } else {
           res.status(500).json({
             error: "in order to access this route, please sign in as admin",
