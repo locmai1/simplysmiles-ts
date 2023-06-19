@@ -73,7 +73,7 @@ const EditParentModal = ({
   useEffect(() => {
     fetchFostersData();
     fetchParentData();
-  });
+  }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setParentData({
@@ -126,11 +126,15 @@ const EditParentModal = ({
 
       if (res.status === 200) {
         handleConfirm();
-      } else if (res.status === 400) {
+      } else if (res.status === 400 && data.type === "email") {
         setPasswordError(false);
         setAdminError(false);
         setEmailError(true);
-      } else if (res.status === 500) {
+      } else if (res.status === 400 && data.type === "password") {
+        setPasswordError(true);
+        setAdminError(false);
+        setEmailError(false);
+      } else if (res.status === 500 && data.type === "admin") {
         setPasswordError(false);
         setAdminError(true);
         setEmailError(false);
@@ -289,7 +293,7 @@ const EditParentModal = ({
                       priority={true}
                     />
                     <span className="text-dark-red font-semibold text-xs">
-                      Passwords do not match or are less than 6 characters
+                      Passwords do not match or incorrect password
                     </span>
                   </div>
                 )}
