@@ -15,6 +15,7 @@ type ParentData = {
   password: string;
   passwordConfirm: string;
   fosterName: string;
+  isAdmin: boolean;
 };
 
 const AddParentModal = ({
@@ -29,6 +30,7 @@ const AddParentModal = ({
     password: "",
     passwordConfirm: "",
     fosterName: "",
+    isAdmin: false,
   });
   const [fosterOptions, setFosterOptions] = useState<string[]>([]);
   const [emailError, setEmailError] = useState<boolean>(false);
@@ -44,6 +46,7 @@ const AddParentModal = ({
           (foster, i: number) => data[foster].name
         );
         setFosterOptions(fosterNames);
+        setFosterOptions((fosterOptions) => [...fosterOptions, "None"]);
       }
     } catch (error) {
       console.log(`failed to fetch foster data: ${error}`);
@@ -92,6 +95,7 @@ const AddParentModal = ({
           email: parentData.email,
           password: parentData.password,
           fosterName: parentData.fosterName,
+          isAdmin: parentData.isAdmin,
         }),
       });
       const data = await res.json();
@@ -120,9 +124,25 @@ const AddParentModal = ({
       {showAddParentModal && !showAddParentConfirmModal && (
         <div className="w-full h-full absolute flex items-center justify-center backdrop-blur-[2px] backdrop-brightness-75 top-0 left-0 z-50">
           <div className="w-[600px] h-[720px] flex m-auto bg-secondary-default rounded-2xl flex-col p-[50px]">
-            <span className="h-6 font-bold text-dark-gray text-2xl leading-6">
-              Add new parent
-            </span>
+            <div className="h-6 w-full flex flex-row justify-between">
+              <span className="h-6 font-bold text-dark-gray text-2xl leading-6">
+                Add new parent
+              </span>
+              <span className="h-full flex flex-row gap-1 font-semibold">
+                Admin
+                <input
+                  type="checkbox"
+                  className=""
+                  checked={parentData.isAdmin}
+                  onChange={() =>
+                    setParentData({
+                      ...parentData,
+                      isAdmin: !parentData.isAdmin,
+                    })
+                  }
+                />
+              </span>
+            </div>
 
             <form
               className="w-full h-[548px] flex flex-col mt-10"
