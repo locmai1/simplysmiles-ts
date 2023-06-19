@@ -17,6 +17,7 @@ type ParentData = {
   password: string;
   passwordConfirm: string;
   fosterName: string;
+  isAdmin: boolean;
 };
 
 const EditParentModal = ({
@@ -33,6 +34,7 @@ const EditParentModal = ({
     password: "",
     passwordConfirm: "",
     fosterName: "",
+    isAdmin: false,
   });
   const [fosterOptions, setFosterOptions] = useState<string[]>([]);
   const [emailError, setEmailError] = useState<boolean>(false);
@@ -45,7 +47,7 @@ const EditParentModal = ({
       const data = await res.json();
       if (data) {
         setParentData(data);
-        console.log(parentData);
+        console.log(data);
       }
     } catch (error) {
       console.log(`failed to fetch parent data: ${error}`);
@@ -61,6 +63,7 @@ const EditParentModal = ({
           (foster, i: number) => data[foster].name
         );
         setFosterOptions(fosterNames);
+        setFosterOptions((fosterOptions) => [...fosterOptions, "None"]);
       }
     } catch (error) {
       console.log(`failed to fetch foster data: ${error}`);
@@ -90,11 +93,15 @@ const EditParentModal = ({
     setAdminError(false);
     setEmailError(false);
     setShowEditParentModal(false);
-    setShowEditParentConfirmModal(true);
+    // setShowEditParentConfirmModal(true);
   };
 
   const validatePassword = () => {
-    if (parentData.password == parentData.passwordConfirm) {
+    if (
+      parentData.password == parentData.passwordConfirm &&
+      parentData.password.length >= 6 &&
+      parentData.passwordConfirm.length >= 6
+    ) {
       return true;
     }
     return false;
@@ -104,13 +111,14 @@ const EditParentModal = ({
     event.preventDefault();
 
     if (validatePassword()) {
-      const res = await fetch("/api/users/Edit", {
-        method: "POST",
+      const res = await fetch(`/api/user/${parentId}/edit`, {
+        method: "PATCH",
         body: JSON.stringify({
           name: parentData.name,
           email: parentData.email,
           password: parentData.password,
           fosterName: parentData.fosterName,
+          isAdmin: parentData.isAdmin,
         }),
       });
       const data = await res.json();
@@ -139,9 +147,25 @@ const EditParentModal = ({
       {showEditParentModal && !showEditParentConfirmModal && (
         <div className="w-full h-full absolute flex items-center justify-center backdrop-blur-[2px] backdrop-brightness-75 top-0 left-0 z-50">
           <div className="w-[600px] h-[720px] flex m-auto bg-secondary-default rounded-2xl flex-col p-[50px]">
-            <span className="h-6 font-bold text-dark-gray text-2xl leading-6">
-              Edit new parent
-            </span>
+            <div className="h-6 w-full flex flex-row justify-between">
+              <span className="h-6 font-bold text-dark-gray text-2xl leading-6">
+                Edit parent profile
+              </span>
+              <span className="h-full flex flex-row gap-1 font-semibold">
+                Admin
+                <input
+                  type="checkbox"
+                  className=""
+                  checked={parentData.isAdmin}
+                  onChange={() =>
+                    setParentData({
+                      ...parentData,
+                      isAdmin: !parentData.isAdmin,
+                    })
+                  }
+                />
+              </span>
+            </div>
 
             <form
               className="w-full h-[548px] flex flex-col mt-10"
@@ -207,6 +231,7 @@ const EditParentModal = ({
                         fosterName: item,
                       });
                     }}
+                    initialItem={parentData.fosterName}
                     // selectedItem={parentData.fosterName}
                   />
                 )}
@@ -264,7 +289,7 @@ const EditParentModal = ({
                       priority={true}
                     />
                     <span className="text-dark-red font-semibold text-xs">
-                      Passwords do not match
+                      Passwords do not match or are less than 6 characters
                     </span>
                   </div>
                 )}

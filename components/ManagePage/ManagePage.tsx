@@ -156,7 +156,7 @@ const ManagePage = () => {
           setShowAddParentConfirmModal={setShowAddParentConfirmModal}
         />
       ) : null}
-      {showAddParentModal && !showAddParentConfirmModal ? (
+      {showEditParentModal && !showEditParentConfirmModal ? (
         <EditParentModal
           parentId={currentParentId}
           setParentName={setCurrentParentName}
@@ -199,11 +199,15 @@ const ManagePage = () => {
             showListView={showListView}
             setCurrentFosterId={setCurrentFosterId}
             setCurrentFosterName={setCurrentFosterName}
+            setCurrentParentId={setCurrentParentId}
+            setCurrentParentName={setCurrentParentName}
             showHomeControls={false}
             showEditHomeModal={showEditHomeModal}
             setShowEditHomeModal={setShowEditHomeModal}
             showDeleteHomeModal={showDeleteHomeModal}
             setShowDeleteHomeModal={setShowDeleteHomeModal}
+            showEditParentModal={showEditParentModal}
+            setShowEditParentModal={setShowEditParentModal}
           />
         )}
 
@@ -216,11 +220,15 @@ const ManagePage = () => {
               showListView={showListView}
               setCurrentFosterId={setCurrentFosterId}
               setCurrentFosterName={setCurrentFosterName}
+              setCurrentParentId={setCurrentParentId}
+              setCurrentParentName={setCurrentParentName}
               showHomeControls={true}
               showEditHomeModal={showEditHomeModal}
               setShowEditHomeModal={setShowEditHomeModal}
               showDeleteHomeModal={showDeleteHomeModal}
               setShowDeleteHomeModal={setShowDeleteHomeModal}
+              showEditParentModal={showEditParentModal}
+              setShowEditParentModal={setShowEditParentModal}
             />
           ))}
       </div>

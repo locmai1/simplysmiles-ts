@@ -6,11 +6,17 @@ type ManagePageTableProps = {
   showListView: boolean;
   setCurrentFosterId: Dispatch<SetStateAction<string>>;
   setCurrentFosterName: Dispatch<SetStateAction<string>>;
+  setCurrentParentId: Dispatch<SetStateAction<string>>;
+  setCurrentParentName: Dispatch<SetStateAction<string>>;
   showHomeControls: boolean;
   showEditHomeModal: boolean;
   setShowEditHomeModal: Dispatch<SetStateAction<boolean>>;
   showDeleteHomeModal: boolean;
   setShowDeleteHomeModal: Dispatch<SetStateAction<boolean>>;
+  showEditParentModal: boolean;
+  setShowEditParentModal: Dispatch<SetStateAction<boolean>>;
+  // showDeleteParentModal: boolean;
+  // setShowDeleteParentModal: Dispatch<SetStateAction<boolean>>;
 };
 
 const ManagePageTable = ({
@@ -18,23 +24,38 @@ const ManagePageTable = ({
   showListView,
   setCurrentFosterId,
   setCurrentFosterName,
+  setCurrentParentId,
+  setCurrentParentName,
   showHomeControls,
   showEditHomeModal,
   setShowEditHomeModal,
   showDeleteHomeModal,
   setShowDeleteHomeModal,
+  showEditParentModal,
+  setShowEditParentModal,
 }: ManagePageTableProps) => {
-  const handleEditSelect = (id: string, name: string) => {
+  const handleEditHomeSelect = (id: string, name: string) => {
     setCurrentFosterId(id);
     setCurrentFosterName(name);
-    setShowEditHomeModal(!showEditHomeModal);
+    setShowEditHomeModal(true);
+    setShowDeleteHomeModal(false);
+    setShowEditParentModal(false);
   };
 
-  const handleDeleteSelect = (id: string, name: string) => {
+  const handleDeleteHomeSelect = (id: string, name: string) => {
     setCurrentFosterId(id);
     setCurrentFosterName(name);
-    setShowDeleteHomeModal(!showDeleteHomeModal);
-    // console.log(showDeleteHomeModal);
+    setShowEditHomeModal(false);
+    setShowDeleteHomeModal(true);
+    setShowEditParentModal(false);
+  };
+
+  const handleEditParentSelect = (id: string, name: string) => {
+    setCurrentParentId(id);
+    setCurrentParentName(name);
+    setShowEditHomeModal(false);
+    setShowDeleteHomeModal(false);
+    setShowEditParentModal(true);
   };
 
   return (
@@ -51,7 +72,7 @@ const ManagePageTable = ({
             <button
               className="w-6 h-6"
               onClick={() =>
-                handleEditSelect(
+                handleEditHomeSelect(
                   usersFosterData.fosterId,
                   usersFosterData.fosterName
                 )
@@ -68,7 +89,7 @@ const ManagePageTable = ({
             <button
               className="w-6 h-6"
               onClick={() =>
-                handleDeleteSelect(
+                handleDeleteHomeSelect(
                   usersFosterData.fosterId,
                   usersFosterData.fosterName
                 )
@@ -131,7 +152,12 @@ const ManagePageTable = ({
                     </td>
                     <td className="px-4 align-center" width={"25%"}>
                       <div className="flex flex-row h-6 w-[90px] justify-between">
-                        <button className="h-6 w-6">
+                        <button
+                          className="h-6 w-6"
+                          onClick={() =>
+                            handleEditParentSelect(user.userId, user.name)
+                          }
+                        >
                           <Image
                             src={"/manage/edit.svg"}
                             alt="edit icon"
