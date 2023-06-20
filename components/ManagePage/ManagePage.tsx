@@ -42,10 +42,8 @@ const ManagePage = () => {
   const [showEditParentConfirmModal, setShowEditParentConfirmModal] =
     useState<boolean>(false);
 
-  // TODO: search functionality (might remove entirely)
   // TODO: API route to freeze individual user (admin)
   // TODO: hook up delete user route
-  // TOOD: clean up component props
   // TODO: error types to all modals and api routes
   const fetchUsersFosterData = async () => {
     try {
