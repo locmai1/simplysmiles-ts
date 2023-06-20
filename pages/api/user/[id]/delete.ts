@@ -41,6 +41,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               type: "user",
             });
           }
+
+          res.status(200).json({
+            message: `successfully deleted user`,
+            type: "success",
+          });
+          return;
         } else {
           res.status(500).json({
             error: "in order to access this route, please sign in as admin",

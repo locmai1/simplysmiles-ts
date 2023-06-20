@@ -45,7 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             return;
           }
 
-          let fosterName = "";
+          let fosterName = "None";
 
           if (user.fosterId) {
             const foster = await prisma.foster.findUnique({
@@ -59,12 +59,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             fosterName = foster.name;
           }
 
-          res.status(200).json({
+          const info = {
             name: user.name,
             email: user.email,
             password: "",
             fosterName: fosterName,
             isAdmin: user.isAdmin,
+            type: "success",
+          };
+
+          res.status(200).json({
+            info,
             type: "success",
           });
           return;
@@ -83,7 +88,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             return;
           }
 
-          let fosterName = "";
+          let fosterName = "None";
 
           if (user.fosterId) {
             const foster = await prisma.foster.findUnique({
@@ -97,12 +102,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             fosterName = foster.name;
           }
 
-          res.status(200).json({
+          const info = {
             name: user.name,
             email: user.email,
             password: "",
             fosterName: fosterName,
             isAdmin: user.isAdmin,
+            type: "success",
+          };
+
+          res.status(200).json({
+            info,
             type: "success",
           });
           return;

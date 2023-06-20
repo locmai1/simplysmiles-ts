@@ -51,7 +51,8 @@ const ManagePage = () => {
       if (res.status === 200) {
         const data = await res.json();
         setAdminError(false);
-        setUsersFosterData(data);
+        setUsersFosterData(data.usersFosterData);
+        // console.log(data);
       } else {
         setAdminError(true);
         setUsersFosterData(null);
@@ -67,7 +68,8 @@ const ManagePage = () => {
       if (res.status === 200) {
         const data = await res.json();
         setAdminError(false);
-        setUsersNoFosterData(data);
+        setUsersNoFosterData(data.usersNoFosterData);
+        // console.log(data);
       } else {
         setAdminError(true);
         setUsersNoFosterData(null);

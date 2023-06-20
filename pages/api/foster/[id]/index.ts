@@ -74,7 +74,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             vehicleBudget: budget.vehicle,
           };
 
-          res.status(200).json(fosterWithBudgetData);
+          res.status(200).json({
+            fosterWithBudgetData,
+            type: "success",
+          });
           return;
           // if the foster with [id] contains the userId of the session
         } else if (foster.user.some((user) => user.id === userId)) {

@@ -8,6 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session || !session.user) {
     res.status(401).json({
       error: "This route is protected. In order to access it, please sign in.",
+      type: "access",
     });
     return;
   }
@@ -32,11 +33,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!homes) {
             res.status(404).json({
               error: `user ${userId} has no associated foster homes`,
+              type: "foster",
             });
             return;
           }
 
-          res.status(200).json(homes);
+          res.status(200).json({
+            homes,
+            type: "success",
+          });
           return;
         } else {
           const homes = await prisma.foster.findMany({
@@ -52,16 +57,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!homes) {
             res.status(404).json({
               error: `user ${userId} has no associated foster homes`,
+              type: "foster",
             });
             return;
           }
 
-          res.status(200).json(homes);
+          res.status(200).json({
+            homes,
+            type: "user",
+          });
           return;
         }
       } catch (error) {
         res.status(500).json({
           error: `failed to fetch fosters: ${error}`,
+          type: "failed",
         });
       }
       break;
@@ -69,6 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     default:
       res.status(500).json({
         error: `method ${req.method} not implemented`,
+        type: "method",
       });
       break;
   }

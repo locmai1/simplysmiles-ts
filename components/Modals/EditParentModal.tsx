@@ -42,8 +42,7 @@ const EditParentModal = ({
       const res = await fetch(`/api/user/${parentId}`);
       const data = await res.json();
       if (data) {
-        setParentData(data);
-        console.log(data);
+        setParentData(data.info);
       }
     } catch (error) {
       console.log(`failed to fetch parent data: ${error}`);
@@ -55,8 +54,8 @@ const EditParentModal = ({
       const res = await fetch(`/api/fosters`);
       const data = await res.json();
       if (data) {
-        const fosterNames = Object.keys(data).map(
-          (foster, i: number) => data[foster].name
+        const fosterNames = Object.keys(data.homes).map(
+          (foster, i: number) => data.homes[foster].name
         );
         setFosterOptions(fosterNames);
         setFosterOptions((fosterOptions) => [...fosterOptions, "None"]);

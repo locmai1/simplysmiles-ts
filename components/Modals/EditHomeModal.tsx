@@ -49,9 +49,8 @@ const EditHomeModal = ({
     try {
       const fetchHomeData = async () => {
         const response = await fetch(`/api/foster/${fosterHomeId}`);
-        const fosterData = await response.json();
-        console.log(fosterData);
-        setFosterHomeData(fosterData);
+        const data = await response.json();
+        setFosterHomeData(data.fosterWithBudgetData);
       };
       fetchHomeData();
       // console.log(fosterHomeData);

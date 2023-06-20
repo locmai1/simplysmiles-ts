@@ -8,6 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session || !session.user) {
     res.status(401).json({
       error: "This route is protected. In order to access it, please sign in.",
+      type: "access",
     });
     return;
   }
@@ -27,58 +28,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         })) ?? { isAdmin: false };
 
         if (isAdmin) {
-          // const fostersWithUsers = await prisma.foster.findMany({
-          //   include: {
-          //     user: true,
-          //   },
-          // });
-
-          // if (!fostersWithUsers) {
-          //   res.status(404).json({
-          //     error: `failed to fetch all fosters`,
-          //   });
-          //   return;
-          // }
-
-          // const fostersWithUsersData = fostersWithUsers.map((foster) => {
-          //   return {
-          //     fosterName: foster.name,
-          //     fosterId: foster.id,
-          //     users: foster.user.map((user) => {
-          //       return {
-          //         userId: user.id,
-          //         name: user.name,
-          //         email: user.email,
-          //         admin: user.isAdmin,
-          //       };
-          //     }),
-          //   };
-          // });
-
-          // if (!fostersWithUsersData) {
-          //   res.status(404).json({
-          //     error: `failed to fetch all users for each foster`,
-          //   });
-          //   return;
-          // }
-
-          // res.status(200).json(fostersWithUsersData);
-
-          const noFostersUsers = await prisma.user.findMany({
+          const usersWithNoFoster = await prisma.user.findMany({
             where: {
               foster: null,
             },
           });
 
-          if (!noFostersUsers) {
+          if (!usersWithNoFoster) {
             res.status(404).json({
               error: `failed to get all users with no foster`,
+              type: "user",
             });
           }
 
-          const noFostersData = {
+          const usersNoFosterData = {
             fosterName: "No Foster Home",
-            users: noFostersUsers.map((user) => {
+            users: usersWithNoFoster.map((user) => {
               return {
                 userId: user.id,
                 name: user.name,
@@ -88,24 +53,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             }),
           };
 
-          if (!noFostersData) {
+          if (!usersNoFosterData) {
             res.status(404).json({
               error: `failed to get users' information`,
+              type: "user",
             });
           }
 
-          // console.log(noFostersData);
-
-          res.status(200).json(noFostersData);
+          res.status(200).json({
+            usersNoFosterData,
+            type: "success",
+          });
+          return;
         } else {
           res.status(500).json({
             error: "in order to access this route, please sign in as admin",
+            type: "admin",
           });
           return;
         }
       } catch (error) {
         res.status(500).json({
           error: `failed to fetch users: ${error}`,
+          type: "failed",
         });
       }
       break;
@@ -113,6 +83,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     default:
       res.status(500).json({
         error: `method ${req.method} not implemented`,
+        type: "method",
       });
       break;
   }

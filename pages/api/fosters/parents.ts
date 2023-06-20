@@ -8,6 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session || !session.user) {
     res.status(401).json({
       error: "This route is protected. In order to access it, please sign in.",
+      type: "access",
     });
     return;
   }
@@ -36,11 +37,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!fostersWithUsers) {
             res.status(404).json({
               error: `failed to fetch all fosters`,
+              type: "foster",
             });
             return;
           }
 
-          const fostersWithUsersData = fostersWithUsers.map((foster) => {
+          const usersFosterData = fostersWithUsers.map((foster) => {
             return {
               fosterName: foster.name,
               fosterId: foster.id,
@@ -55,23 +57,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             };
           });
 
-          if (!fostersWithUsersData) {
+          if (!usersFosterData) {
             res.status(404).json({
               error: `failed to fetch all users for each foster`,
+              type: "user",
             });
             return;
           }
 
-          res.status(200).json(fostersWithUsersData);
+          res.status(200).json({
+            usersFosterData,
+            type: "success",
+          });
+          return;
         } else {
           res.status(500).json({
             error: "in order to access this route, please sign in as admin",
+            type: "admin",
           });
           return;
         }
       } catch (error) {
         res.status(500).json({
           error: `failed to fetch users: ${error}`,
+          type: "failed",
         });
       }
       break;
@@ -79,6 +88,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     default:
       res.status(500).json({
         error: `method ${req.method} not implemented`,
+        type: "method",
       });
       break;
   }

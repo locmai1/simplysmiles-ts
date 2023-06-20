@@ -9,6 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session || !session.user) {
     res.status(401).json({
       error: "This route is protected. In order to access it, please sign in.",
+      type: "access",
     });
     return;
   }
@@ -53,6 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (existingHome) {
             res.status(400).json({
               error: `already existing home name`,
+              type: "foster",
             });
             return;
           }
@@ -74,6 +76,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!budget) {
             res.status(404).json({
               error: `failed to create new budget`,
+              type: "budget",
             });
             return;
           }
@@ -88,6 +91,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!foster) {
             res.status(404).json({
               error: `failed to create new foster`,
+              type: "foster",
             });
             return;
           }
@@ -108,17 +112,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           //   return;
           // }
 
-          res.status(200).json(foster);
+          res.status(200).json({
+            foster,
+            type: "success",
+          });
           return;
         } else {
           res.status(500).json({
             error: "in order to access this route, please sign in as admin",
+            type: "admin",
           });
           return;
         }
       } catch (error) {
         res.status(400).json({
           error: `failed to create foster home: ${error}`,
+          type: "failed",
         });
       }
       break;
@@ -126,6 +135,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     default:
       res.status(500).json({
         error: `method ${req.method} not implemented`,
+        type: "method",
       });
       break;
   }
