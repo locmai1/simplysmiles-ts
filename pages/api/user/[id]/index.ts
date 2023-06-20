@@ -116,7 +116,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       } catch (error) {
         res.status(404).json({
           error: `failed to fetch user: ${error}`,
-          type: "user",
+          type: "failed",
         });
       }
       break;

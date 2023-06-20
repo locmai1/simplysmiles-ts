@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!deleted) {
             res.status(404).json({
               error: `failed to delete user with id: ${userId}`,
-              type: "delete",
+              type: "user",
             });
           }
         } else {

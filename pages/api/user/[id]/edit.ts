@@ -122,7 +122,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             if (!updatedUser) {
               res.status(404).json({
                 error: `failed to update user with id: ${userId}`,
-                type: `edit`,
+                type: `user`,
               });
               return;
             }
@@ -165,7 +165,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             if (!updatedUser) {
               res.status(404).json({
                 error: `failed to update user with id: ${userId}`,
-                type: `edit`,
+                type: `user`,
               });
               return;
             }
@@ -208,7 +208,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             if (!updatedUser) {
               res.status(404).json({
                 error: `failed to update user with id: ${userId}`,
-                type: `edit`,
+                type: `user`,
               });
               return;
             }
@@ -237,7 +237,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             if (!updatedUser) {
               res.status(404).json({
                 error: `failed to update user with id: ${userId}`,
-                type: `edit`,
+                type: `user`,
               });
               return;
             }
@@ -259,7 +259,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       } catch (error) {
         res.status(404).json({
           error: `failed to edit user: ${error}`,
-          type: `edit`,
+          type: `failed`,
         });
       }
       break;
