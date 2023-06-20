@@ -9,6 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session || !session.user) {
     res.status(401).json({
       error: "This route is protected. In order to access it, please sign in.",
+      type: "access",
     });
     return;
   }
@@ -39,6 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!user) {
             res.status(404).json({
               error: `cannot find user with id ${userId}`,
+              type: "user",
             });
             return;
           }
@@ -63,6 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             password: "",
             fosterName: fosterName,
             isAdmin: user.isAdmin,
+            type: "success",
           });
           return;
         } else if (userId == session.user.id) {
@@ -75,6 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!user) {
             res.status(404).json({
               error: `cannot find user with id ${userId}`,
+              type: "user",
             });
             return;
           }
@@ -99,17 +103,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             password: "",
             fosterName: fosterName,
             isAdmin: user.isAdmin,
+            type: "success",
           });
           return;
         } else {
           res.status(500).json({
             error: "in order to access this route, please sign in as admin",
+            type: "admin",
           });
           return;
         }
       } catch (error) {
         res.status(404).json({
           error: `failed to fetch user: ${error}`,
+          type: "user",
         });
       }
       break;
@@ -117,6 +124,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     default:
       res.status(500).json({
         error: `method ${req.method} not implemented`,
+        type: "method",
       });
       break;
   }

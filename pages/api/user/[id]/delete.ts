@@ -9,6 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session || !session.user) {
     res.status(401).json({
       error: "This route is protected. In order to access it, please sign in.",
+      type: "access",
     });
     return;
   }
@@ -37,17 +38,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!deleted) {
             res.status(404).json({
               error: `failed to delete user with id: ${userId}`,
+              type: "delete",
             });
           }
         } else {
           res.status(500).json({
             error: "in order to access this route, please sign in as admin",
+            type: "admin",
           });
           return;
         }
       } catch (error) {
-        res.status(400).json({
+        res.status(404).json({
           error: `failed to delete user: ${error}`,
+          type: "user",
         });
       }
       break;
@@ -55,6 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     default:
       res.status(500).json({
         error: `method ${req.method} not implemented`,
+        type: "method",
       });
       break;
   }
