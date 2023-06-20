@@ -88,17 +88,13 @@ const ManagePage = () => {
     <div className="p-16 w-full h-full flex flex-col relative">
       {showAddHomeModal && !showAddHomeConfirmModal ? (
         <AddHomeModal
-          showAddHomeModal={showAddHomeModal}
           setShowAddHomeModal={setShowAddHomeModal}
-          showAddHomeConfirmModal={showAddHomeConfirmModal}
           setShowAddHomeConfirmModal={setShowAddHomeConfirmModal}
         />
       ) : null}
       {!showAddHomeModal && showAddHomeConfirmModal ? (
         <AddHomeConfirmModal
-          showAddHomeModal={showAddHomeModal}
           setShowAddHomeModal={setShowAddHomeModal}
-          showAddHomeConfirmModal={showAddHomeConfirmModal}
           setShowAddHomeConfirmModal={setShowAddHomeConfirmModal}
         />
       ) : null}
@@ -106,18 +102,14 @@ const ManagePage = () => {
         <EditHomeModal
           fosterHomeId={currentFosterId}
           setFosterHomeName={setCurrentFosterName}
-          showEditHomeModal={showEditHomeModal}
           setShowEditHomeModal={setShowEditHomeModal}
-          showEditHomeConfirmModal={showEditHomeConfirmModal}
           setShowEditHomeConfirmModal={setShowEditHomeConfirmModal}
         />
       ) : null}
       {!showEditHomeModal && showEditHomeConfirmModal ? (
         <EditHomeConfirmModal
           fosterHomeName={currentFosterName}
-          showEditHomeModal={showEditHomeModal}
           setShowEditHomeModal={setShowEditHomeModal}
-          showEditHomeConfirmModal={showEditHomeConfirmModal}
           setShowEditHomeConfirmModal={setShowEditHomeConfirmModal}
         />
       ) : null}
@@ -125,34 +117,25 @@ const ManagePage = () => {
         <DeleteHomeModal
           fosterHomeId={currentFosterId}
           fosterHomeName={currentFosterName}
-          showDeleteHomeModal={showDeleteHomeModal}
           setShowDeleteHomeModal={setShowDeleteHomeModal}
-          showDeleteHomeConfirmModal={showDeleteHomeConfirmModal}
           setShowDeleteHomeConfirmModal={setShowDeleteHomeConfirmModal}
         />
       ) : null}
       {!showDeleteHomeModal && showDeleteHomeConfirmModal ? (
         <DeleteHomeConfirmModal
           fosterHomeName={currentFosterName}
-          showDeleteHomeModal={showDeleteHomeModal}
-          setShowDeleteHomeModal={setShowDeleteHomeModal}
-          showDeleteHomeConfirmModal={showDeleteHomeConfirmModal}
           setShowDeleteHomeConfirmModal={setShowDeleteHomeConfirmModal}
         />
       ) : null}
       {showAddParentModal && !showAddParentConfirmModal ? (
         <AddParentModal
-          showAddParentModal={showAddParentModal}
           setShowAddParentModal={setShowAddParentModal}
-          showAddParentConfirmModal={showAddParentConfirmModal}
           setShowAddParentConfirmModal={setShowAddParentConfirmModal}
         />
       ) : null}
       {!showAddParentModal && showAddParentConfirmModal ? (
         <AddParentConfirmModal
-          showAddParentModal={showAddParentModal}
           setShowAddParentModal={setShowAddParentModal}
-          showAddParentConfirmModal={showAddParentConfirmModal}
           setShowAddParentConfirmModal={setShowAddParentConfirmModal}
         />
       ) : null}
@@ -160,9 +143,7 @@ const ManagePage = () => {
         <EditParentModal
           parentId={currentParentId}
           setParentName={setCurrentParentName}
-          showEditParentModal={showEditParentModal}
           setShowEditParentModal={setShowEditParentModal}
-          showEditParentConfirmModal={showEditParentConfirmModal}
           setShowEditParentConfirmModal={setShowEditParentConfirmModal}
         />
       ) : null}

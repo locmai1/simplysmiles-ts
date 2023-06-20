@@ -3,9 +3,7 @@ import FilterDropdown from "../FilterDropdown";
 import Image from "next/image";
 
 type AddParentModalProps = {
-  showAddParentModal: boolean;
   setShowAddParentModal: Dispatch<SetStateAction<boolean>>;
-  showAddParentConfirmModal: boolean;
   setShowAddParentConfirmModal: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -19,9 +17,7 @@ type ParentData = {
 };
 
 const AddParentModal = ({
-  showAddParentModal,
   setShowAddParentModal,
-  showAddParentConfirmModal,
   setShowAddParentConfirmModal,
 }: AddParentModalProps) => {
   const [parentData, setParentData] = useState<ParentData>({
@@ -121,76 +117,75 @@ const AddParentModal = ({
 
   return (
     <>
-      {showAddParentModal && !showAddParentConfirmModal && (
-        <div className="w-full h-full absolute flex items-center justify-center backdrop-blur-[2px] backdrop-brightness-75 top-0 left-0 z-50">
-          <div className="w-[600px] h-[720px] flex m-auto bg-secondary-default rounded-2xl flex-col p-[50px]">
-            <div className="h-6 w-full flex flex-row justify-between">
-              <span className="h-6 font-bold text-dark-gray text-2xl leading-6">
-                Add new parent
-              </span>
-              <span className="h-full flex flex-row gap-1 font-semibold">
-                Admin
-                <input
-                  type="checkbox"
-                  className=""
-                  checked={parentData.isAdmin}
-                  onChange={() =>
-                    setParentData({
-                      ...parentData,
-                      isAdmin: !parentData.isAdmin,
-                    })
-                  }
-                />
-              </span>
+      <div className="w-full h-full absolute flex items-center justify-center backdrop-blur-[2px] backdrop-brightness-75 top-0 left-0 z-50">
+        <div className="w-[600px] h-[720px] flex m-auto bg-secondary-default rounded-2xl flex-col p-[50px]">
+          <div className="h-6 w-full flex flex-row justify-between">
+            <span className="h-6 font-bold text-dark-gray text-2xl leading-6">
+              Add new parent
+            </span>
+            <span className="h-full flex flex-row gap-1 font-semibold">
+              Admin
+              <input
+                type="checkbox"
+                className=""
+                checked={parentData.isAdmin}
+                onChange={() =>
+                  setParentData({
+                    ...parentData,
+                    isAdmin: !parentData.isAdmin,
+                  })
+                }
+              />
+            </span>
+          </div>
+
+          <form
+            className="w-full h-[548px] flex flex-col mt-10"
+            onSubmit={handleSubmit}
+          >
+            <div className="w-full flex flex-col">
+              {adminError && (
+                <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mb-3">
+                  <Image
+                    src="/manage/warning.svg"
+                    width={16}
+                    height={16}
+                    alt="warning"
+                    priority={true}
+                  />
+                  <span className="text-dark-red font-semibold text-xs">
+                    You need to be an admin to add parents
+                  </span>
+                </div>
+              )}
+              <div className="h-4 flex flex-row">
+                <span className="text-base font-bold text-dark-gray leading-4">
+                  Name
+                </span>
+                <span className="text-base font-bold text-light-red leading-4">
+                  &nbsp;*
+                </span>
+              </div>
+              <input
+                className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
+                name="name"
+                type="text"
+                value={parentData.name}
+                onChange={handleInputChange}
+                required
+              />
             </div>
 
-            <form
-              className="w-full h-[548px] flex flex-col mt-10"
-              onSubmit={handleSubmit}
-            >
-              <div className="w-full flex flex-col">
-                {adminError && (
-                  <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mb-3">
-                    <Image
-                      src="/manage/warning.svg"
-                      width={16}
-                      height={16}
-                      alt="warning"
-                      priority={true}
-                    />
-                    <span className="text-dark-red font-semibold text-xs">
-                      You need to be an admin to add parents
-                    </span>
-                  </div>
-                )}
-                <div className="h-4 flex flex-row">
-                  <span className="text-base font-bold text-dark-gray leading-4">
-                    Name
-                  </span>
-                  <span className="text-base font-bold text-light-red leading-4">
-                    &nbsp;*
-                  </span>
-                </div>
-                <input
-                  className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
-                  name="name"
-                  type="text"
-                  value={parentData.name}
-                  onChange={handleInputChange}
-                  required
-                />
+            <div className="w-full flex flex-col mt-5">
+              <div className="h-4 flex flex-row">
+                <span className="text-base font-bold text-dark-gray leading-4">
+                  Home
+                </span>
+                <span className="text-base font-bold text-light-red leading-4">
+                  &nbsp;*
+                </span>
               </div>
-
-              <div className="w-full flex flex-col mt-5">
-                <div className="h-4 flex flex-row">
-                  <span className="text-base font-bold text-dark-gray leading-4">
-                    Home
-                  </span>
-                  <span className="text-base font-bold text-light-red leading-4">
-                    &nbsp;*
-                  </span>
-                </div>
-                {/* <select
+              {/* <select
                   className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
                   name="fosterName"
                   value={parentData.fosterName}
@@ -199,131 +194,130 @@ const AddParentModal = ({
                 >
                   {fosterOptions}
                 </select> */}
-                {fosterOptions && (
-                  <FilterDropdown
-                    items={fosterOptions}
-                    onItemSelect={(idx: number, item: string) => {
-                      setParentData({
-                        ...parentData,
-                        fosterName: item,
-                      });
-                    }}
-                    initialItem={parentData.fosterName}
-                    // selectedItem={parentData.fosterName}
+              {fosterOptions && (
+                <FilterDropdown
+                  items={fosterOptions}
+                  onItemSelect={(idx: number, item: string) => {
+                    setParentData({
+                      ...parentData,
+                      fosterName: item,
+                    });
+                  }}
+                  initialItem={parentData.fosterName}
+                  // selectedItem={parentData.fosterName}
+                />
+              )}
+            </div>
+
+            <div className="w-full flex flex-col mt-5">
+              <div className="h-4 flex flex-row">
+                <span className="text-base font-bold text-dark-gray leading-4">
+                  Email
+                </span>
+                <span className="text-base font-bold text-light-red leading-4">
+                  &nbsp;*
+                </span>
+              </div>
+              {emailError && (
+                <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mt-3">
+                  <Image
+                    src="/manage/warning.svg"
+                    width={16}
+                    height={16}
+                    alt="warning"
+                    priority={true}
                   />
-                )}
-              </div>
-
-              <div className="w-full flex flex-col mt-5">
-                <div className="h-4 flex flex-row">
-                  <span className="text-base font-bold text-dark-gray leading-4">
-                    Email
-                  </span>
-                  <span className="text-base font-bold text-light-red leading-4">
-                    &nbsp;*
+                  <span className="text-dark-red font-semibold text-xs">
+                    There is an existing user under that email
                   </span>
                 </div>
-                {emailError && (
-                  <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mt-3">
-                    <Image
-                      src="/manage/warning.svg"
-                      width={16}
-                      height={16}
-                      alt="warning"
-                      priority={true}
-                    />
-                    <span className="text-dark-red font-semibold text-xs">
-                      There is an existing user under that email
-                    </span>
-                  </div>
-                )}
-                <input
-                  className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
-                  name="email"
-                  type="email"
-                  value={parentData.email}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
+              )}
+              <input
+                className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
+                name="email"
+                type="email"
+                value={parentData.email}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
 
-              <div className="w-full flex flex-col mt-5">
-                <div className="h-4 flex flex-row">
-                  <span className="text-base font-bold text-dark-gray leading-4">
-                    Password
-                  </span>
-                  <span className="text-base font-bold text-light-red leading-4">
-                    &nbsp;*
+            <div className="w-full flex flex-col mt-5">
+              <div className="h-4 flex flex-row">
+                <span className="text-base font-bold text-dark-gray leading-4">
+                  Password
+                </span>
+                <span className="text-base font-bold text-light-red leading-4">
+                  &nbsp;*
+                </span>
+              </div>
+              {passwordError && (
+                <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mt-3">
+                  <Image
+                    src="/manage/warning.svg"
+                    width={16}
+                    height={16}
+                    alt="warning"
+                    priority={true}
+                  />
+                  <span className="text-dark-red font-semibold text-xs">
+                    Passwords do not match
                   </span>
                 </div>
-                {passwordError && (
-                  <div className="w-full h-8 rounded-lg flex flex-row items-center justify-start bg-light-red bg-opacity-20 px-4 gap-2 mt-3">
-                    <Image
-                      src="/manage/warning.svg"
-                      width={16}
-                      height={16}
-                      alt="warning"
-                      priority={true}
-                    />
-                    <span className="text-dark-red font-semibold text-xs">
-                      Passwords do not match
-                    </span>
-                  </div>
-                )}
-                <input
-                  className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
-                  name="password"
-                  type="password"
-                  value={parentData.password}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
+              )}
+              <input
+                className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
+                name="password"
+                type="password"
+                value={parentData.password}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
 
-              <div className="w-full flex flex-col mt-5">
-                <div className="h-4 flex flex-row">
-                  <span className="text-base font-bold text-dark-gray leading-4">
-                    Confirm Password
-                  </span>
-                  <span className="text-base font-bold text-light-red leading-4">
-                    &nbsp;*
-                  </span>
-                </div>
-                <input
-                  className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
-                  name="passwordConfirm"
-                  type="password"
-                  value={parentData.passwordConfirm}
-                  onChange={handleInputChange}
-                  required
-                />
+            <div className="w-full flex flex-col mt-5">
+              <div className="h-4 flex flex-row">
+                <span className="text-base font-bold text-dark-gray leading-4">
+                  Confirm Password
+                </span>
+                <span className="text-base font-bold text-light-red leading-4">
+                  &nbsp;*
+                </span>
               </div>
+              <input
+                className="border-[1px] border-light-gray rounded-lg w-full h-10 px-4 mt-3"
+                name="passwordConfirm"
+                type="password"
+                value={parentData.passwordConfirm}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
 
-              {/* form control */}
-              <div className="w-full h-10 mt-12 flex flex-row justify-between gap-3">
-                <button
-                  className="h-10 w-60 bg-secondary-default rounded-lg flex justify-center items-center border-[1px] border-primary-default"
-                  onClick={handleCancel}
-                  type="button"
-                >
-                  <span className="text-base leading-4 text-primary-default font-bold">
-                    Cancel
-                  </span>
-                </button>
-                <button
-                  className="h-10 w-60 bg-primary-default rounded-lg flex justify-center items-center"
-                  type="submit"
-                  // onClick={handleSubmit}
-                >
-                  <span className="text-base leading-4 text-secondary-default font-bold">
-                    Add parent
-                  </span>
-                </button>
-              </div>
-            </form>
-          </div>
+            {/* form control */}
+            <div className="w-full h-10 mt-12 flex flex-row justify-between gap-3">
+              <button
+                className="h-10 w-60 bg-secondary-default rounded-lg flex justify-center items-center border-[1px] border-primary-default"
+                onClick={handleCancel}
+                type="button"
+              >
+                <span className="text-base leading-4 text-primary-default font-bold">
+                  Cancel
+                </span>
+              </button>
+              <button
+                className="h-10 w-60 bg-primary-default rounded-lg flex justify-center items-center"
+                type="submit"
+                // onClick={handleSubmit}
+              >
+                <span className="text-base leading-4 text-secondary-default font-bold">
+                  Add parent
+                </span>
+              </button>
+            </div>
+          </form>
         </div>
-      )}
+      </div>
     </>
   );
 };
