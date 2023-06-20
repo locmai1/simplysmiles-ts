@@ -59,8 +59,8 @@ const ManagePageHeader = ({
       </div>
 
       {!adminError && (
-        <div className="w-full h-10 mt-[52px] flex flex-row justify-between">
-          <div className="relative w-[495px] h-10 flex flex-row items-center z-0">
+        <div className="w-full h-10 mt-[52px] flex flex-row justify-end">
+          {/* <div className="relative w-[495px] h-10 flex flex-row items-center z-0">
             <Image
               className="absolute ml-6"
               src={"/manage/search.svg"}
@@ -74,9 +74,9 @@ const ManagePageHeader = ({
               className="border-[1px] rounded-[50px] px-14 border-light-gray text-dark-gray w-full h-full"
               placeholder="Search"
             />
-          </div>
+          </div> */}
 
-          <div className="flex flex-row h-full w-[88px] justify-between">
+          <div className="flex flex-row h-10 w-[88px] justify-between">
             <button
               className="h-full w-10 rounded-lg"
               style={{ background: showListView ? "#C5C5C5" : "#12368E" }}
