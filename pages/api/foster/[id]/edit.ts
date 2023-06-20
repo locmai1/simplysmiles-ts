@@ -9,6 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session || !session.user) {
     res.status(401).json({
       error: "This route is protected. In order to access it, please sign in.",
+      type: "access",
     });
     return;
   }
@@ -56,6 +57,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!foster) {
             res.status(404).json({
               error: `failed to update foster with id: ${fosterId}`,
+              type: "foster",
             });
             return;
           }
@@ -80,6 +82,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!updatedBudget) {
             res.status(404).json({
               error: `failed to update budget with id: ${foster.budgetId}`,
+              type: "budget",
             });
             return;
           }
@@ -87,16 +90,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           return res.status(200).json({
             updatedBudget: updatedBudget,
             updatedFoster: foster,
+            type: "success",
           });
         } else {
           res.status(500).json({
             error: "in order to access this route, please sign in as admin",
+            type: "admin",
           });
           return;
         }
       } catch (error) {
-        res.status(400).json({
+        res.status(404).json({
           error: `failed to edit foster: ${error}`,
+          type: "failed",
         });
       }
       break;
@@ -104,6 +110,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     default:
       res.status(500).json({
         error: `method ${req.method} not implemented`,
+        type: "method",
       });
       break;
   }

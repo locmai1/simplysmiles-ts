@@ -9,6 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session || !session.user) {
     res.status(401).json({
       error: "This route is protected. In order to access it, please sign in.",
+      type: "access",
     });
     return;
   }
@@ -41,6 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!foster) {
             res.status(404).json({
               error: `failed to get budget of foster with id: ${fosterId}`,
+              type: "foster",
             });
           }
 
@@ -58,6 +60,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!disconnect) {
             res.status(404).json({
               error: `failed to disconnect foster from users`,
+              type: "disconnect",
             });
           }
 
@@ -70,21 +73,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (!deleted) {
             res.status(404).json({
               error: `failed to delete foster with id: ${fosterId}`,
+              type: "delete",
             });
           }
 
           res.status(200).json({
             message: "successfully deleted foster home",
+            type: "success",
           });
         } else {
           res.status(500).json({
             error: "in order to access this route, please sign in as admin",
+            type: "admin",
           });
           return;
         }
       } catch (error) {
-        res.status(400).json({
+        res.status(404).json({
           error: `failed to delete foster: ${error}`,
+          type: "failed",
         });
       }
       break;
@@ -92,6 +99,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     default:
       res.status(500).json({
         error: `method ${req.method} not implemented`,
+        type: "method",
       });
       break;
   }
