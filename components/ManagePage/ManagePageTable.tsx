@@ -12,6 +12,7 @@ type ManagePageTableProps = {
   setShowEditHomeModal: Dispatch<SetStateAction<boolean>>;
   setShowDeleteHomeModal: Dispatch<SetStateAction<boolean>>;
   setShowEditParentModal: Dispatch<SetStateAction<boolean>>;
+  setShowDeleteParentModal: Dispatch<SetStateAction<boolean>>;
 };
 
 const ManagePageTable = ({
@@ -25,6 +26,7 @@ const ManagePageTable = ({
   setShowEditHomeModal,
   setShowDeleteHomeModal,
   setShowEditParentModal,
+  setShowDeleteParentModal,
 }: ManagePageTableProps) => {
   const handleEditHomeSelect = (id: string, name: string) => {
     setCurrentFosterId(id);
@@ -32,6 +34,7 @@ const ManagePageTable = ({
     setShowEditHomeModal(true);
     setShowDeleteHomeModal(false);
     setShowEditParentModal(false);
+    setShowDeleteParentModal(false);
   };
 
   const handleDeleteHomeSelect = (id: string, name: string) => {
@@ -40,6 +43,7 @@ const ManagePageTable = ({
     setShowEditHomeModal(false);
     setShowDeleteHomeModal(true);
     setShowEditParentModal(false);
+    setShowDeleteParentModal(false);
   };
 
   const handleEditParentSelect = (id: string, name: string) => {
@@ -48,6 +52,16 @@ const ManagePageTable = ({
     setShowEditHomeModal(false);
     setShowDeleteHomeModal(false);
     setShowEditParentModal(true);
+    setShowDeleteParentModal(false);
+  };
+
+  const handleDeleteParentSelect = (id: string, name: string) => {
+    setCurrentParentId(id);
+    setCurrentParentName(name);
+    setShowEditHomeModal(false);
+    setShowDeleteHomeModal(false);
+    setShowEditParentModal(false);
+    setShowDeleteParentModal(true);
   };
 
   return (
@@ -158,7 +172,12 @@ const ManagePageTable = ({
                             priority={true}
                           />
                         </button>
-                        <button className="h-6 w-6">
+                        <button
+                          className="h-6 w-6"
+                          onClick={() =>
+                            handleDeleteParentSelect(user.userId, user.name)
+                          }
+                        >
                           <Image
                             src={"/manage/delete.svg"}
                             alt="delete icon"

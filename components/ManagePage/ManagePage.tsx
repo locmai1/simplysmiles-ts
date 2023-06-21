@@ -44,6 +44,10 @@ const ManagePage = () => {
     useState<boolean>(false);
   const [showEditParentConfirmModal, setShowEditParentConfirmModal] =
     useState<boolean>(false);
+  const [showDeleteParentModal, setShowDeleteParentModal] =
+    useState<boolean>(false);
+  const [showDeleteParentConfirmModal, setShowDeleteParentConfirmModal] =
+    useState<boolean>(false);
 
   // TODO: API route to freeze individual user (admin)
   // TODO: hook up delete user route
@@ -157,6 +161,20 @@ const ManagePage = () => {
           setShowEditParentConfirmModal={setShowEditParentConfirmModal}
         />
       ) : null}
+      {showDeleteParentModal && !showDeleteParentConfirmModal ? (
+        <DeleteParentModal
+          parentId={currentParentId}
+          parentName={currentParentName}
+          setShowDeleteParentModal={setShowDeleteParentModal}
+          setShowDeleteParentConfirmModal={setShowDeleteParentConfirmModal}
+        />
+      ) : null}
+      {!showDeleteParentModal && showDeleteParentConfirmModal ? (
+        <DeleteParentConfirmModal
+          parentName={currentParentName}
+          setShowDeleteParentConfirmModal={setShowDeleteParentConfirmModal}
+        />
+      ) : null}
 
       {/* header */}
       <ManagePageHeader
@@ -196,6 +214,7 @@ const ManagePage = () => {
             setShowEditHomeModal={setShowEditHomeModal}
             setShowDeleteHomeModal={setShowDeleteHomeModal}
             setShowEditParentModal={setShowEditParentModal}
+            setShowDeleteParentModal={setShowDeleteParentModal}
           />
         )}
 
@@ -214,6 +233,7 @@ const ManagePage = () => {
               setShowEditHomeModal={setShowEditHomeModal}
               setShowDeleteHomeModal={setShowDeleteHomeModal}
               setShowEditParentModal={setShowEditParentModal}
+              setShowDeleteParentModal={setShowDeleteParentModal}
             />
           ))}
       </div>
