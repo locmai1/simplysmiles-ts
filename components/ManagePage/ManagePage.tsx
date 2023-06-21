@@ -10,6 +10,9 @@ import DeleteHomeConfirmModal from "../Modals/DeleteHomeConfirmModal";
 import AddParentModal from "../Modals/AddParentModal";
 import AddParentConfirmModal from "../Modals/AddParentConfirmModal";
 import EditParentModal from "../Modals/EditParentModal";
+import EditParentConfirmModal from "../Modals/EditParentConfirmModal";
+import DeleteParentModal from "../Modals/DeleteParentModal";
+import DeleteParentConfirmModal from "../Modals/DeleteParentConfirmModal";
 
 import ManagePageHeader from "./ManagePageHeader";
 import ManagePageTable from "./ManagePageTable";
@@ -44,7 +47,7 @@ const ManagePage = () => {
 
   // TODO: API route to freeze individual user (admin)
   // TODO: hook up delete user route
-  // TODO: error types to all modals and api routes
+  // TODO: edit parent confirmation modal
   const fetchUsersFosterData = async () => {
     try {
       const res = await fetch("/api/fosters/parents");
@@ -143,6 +146,13 @@ const ManagePage = () => {
         <EditParentModal
           parentId={currentParentId}
           setParentName={setCurrentParentName}
+          setShowEditParentModal={setShowEditParentModal}
+          setShowEditParentConfirmModal={setShowEditParentConfirmModal}
+        />
+      ) : null}
+      {!showEditParentModal && showEditParentConfirmModal ? (
+        <EditParentConfirmModal
+          parentName={currentParentName}
           setShowEditParentModal={setShowEditParentModal}
           setShowEditParentConfirmModal={setShowEditParentConfirmModal}
         />

@@ -88,7 +88,7 @@ const EditParentModal = ({
     setAdminError(false);
     setEmailError(false);
     setShowEditParentModal(false);
-    // setShowEditParentConfirmModal(true);
+    setShowEditParentConfirmModal(true);
   };
 
   const validatePassword = () => {
